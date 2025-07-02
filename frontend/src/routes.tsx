@@ -43,6 +43,7 @@ import { Messages } from "./pages/recruiter/Messages";
 import { Reports } from "./pages/recruiter/Reports";
 import { RecruiterProfile } from "./pages/recruiter/RecruiterProfile";
 import { ScheduledInterviews } from "./pages/recruiter/ScheduledInterviews";
+import JobDetailsPage from "./pages/recruiter/rh/JobDetailsPage1";
 
 export function AppRoutes() {
   return (
@@ -89,6 +90,7 @@ export function AppRoutes() {
           <Route path="avaliacoes" element={<EvaluationsList />} />
           <Route path="historico" element={<JobHistory />} />
           <Route path="entrevistas" element={<ScheduledInterviews />} />
+          <Route path="vagas/:id" element={<JobDetailsPage />} />
 
           {/* Job Matching */}
           <Route path="job-matching/:id" element={<JobMatching />} />

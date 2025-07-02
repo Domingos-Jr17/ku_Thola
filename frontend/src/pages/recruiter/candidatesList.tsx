@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useJobs } from '@/context/jobsContext';
 import { JobMatchingScore } from "@/components/cards/JobMatchingScore";
 
 interface Candidate {
@@ -121,3 +120,7 @@ export const CandidatesList = () => {
     </div>
   );
 };
+function useJobs() {
+  throw new Error("Function not implemented.");
+}
+

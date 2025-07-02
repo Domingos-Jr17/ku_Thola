@@ -1,85 +1,123 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
-import type { jobProps } from '@/types/recruiterProps';
+import React, { createContext, useContext, useState, type ReactNode } from "react";
 
-interface JobsContextType {
-  jobs: jobProps[];
-  addJob: (job: Omit<jobProps, '_id'>) => void;
-  deleteJob: (id: string) => void;
+interface Candidate {
+  id: string;
+  nome: string;
+  status: string;
+  avaliado: boolean;
+  // Pode adicionar outros campos conforme necessário
 }
 
-const JobsContext = createContext<JobsContextType | undefined>(undefined);
+interface Interview {
+  id: string;
+  name: string;
+  date: string;
+  link?: string;
+  candidateId: string;
+}
 
-const generateId = () => Math.random().toString(36).substring(2, 9);
+interface Job {
+  id: string;
+  title: string;
+  status: string;
+  descricao: string;
+  dataCriacao: string;
+  local: string;
+  candidatos: Candidate[];
+  entrevistas: Interview[];
+}
 
-const initialJobs: jobProps[] = [
-  {
-    _id: '1',
-    title: 'Desenvolvedor Frontend',
-    department: 'Tecnologia',
-    type: 'presencial',
-    expirationDate: '2025-12-31',
-    description: 'Desenvolvimento de interfaces modernas.',
-    requirements: ['React', 'Tailwind CSS', 'JavaScript'],
-    location: 'Maputo',
-    benefits: ['Plano de saúde', 'Vale refeição'],
-  },
-  {
-    _id: '2',
-    title: 'Analista de Marketing',
-    department: 'Marketing',
-    type: 'virtual',
-    expirationDate: '2023-11-15',
-    description: 'Campanhas digitais e SEO.',
-    requirements: ['Google Ads', 'SEO', 'Social Media'],
-    location: 'Remoto',
-    benefits: ['Horário flexível'],
-  },
-  // Novas vagas adicionadas com datas atuais (2025)
-  {
-    _id: '3',
-    title: 'Engenheiro Civil',
-    department: 'Construção Civil',
-    type: 'presencial',
-    expirationDate: '2024-07-31',
-    description: 'Gerenciamento de obras e projetos rodoviários.',
-    requirements: ['AutoCAD', 'MS Project', 'Experiência em fiscalização'],
-    location: 'Maputo',
-    benefits: ['Assistência médica', 'Vale transporte'],
-  },
-  {
-    _id: '4',
-    title: 'Especialista em Suporte Técnico',
-    department: 'TI',
-    type: 'híbrido',
-    expirationDate: '2025-08-15',
-    description: 'Suporte técnico e manutenção de sistemas internos.',
-    requirements: ['Conhecimento em redes', 'Windows/Linux', 'Atendimento ao cliente'],
-    location: 'Maputo',
-    benefits: ['Vale alimentação', 'Home office parcial'],
-  },
-];
+interface JobContextType {
+  jobs: Job[];
+  getJobById: (id: string | undefined) => Job | undefined;
+  avaliarCandidato: (jobId: string, candidateId: string) => void;
+  agendarEntrevista: (jobId: string, interview: Interview) => void;
+  fecharCandidaturas: (jobId: string) => void;
+  deleteJob: (id: string) => void; // Adicione esta linha
+}
 
-export const JobsProvider = ({ children }: { children: ReactNode }) => {
-  const [jobs, setJobs] = useState<jobProps[]>(initialJobs);
+const JobContext = createContext<JobContextType | undefined>(undefined);
 
-  const addJob = (job: Omit<jobProps, '_id'>) => {
-    const newJob: jobProps = { ...job, _id: generateId() };
-    setJobs((prev) => [...prev, newJob]);
+export const JobProvider = ({ children }: { children: ReactNode }) => {
+  const [jobs, setJobs] = useState<Job[]>([
+    {
+      id: "1",
+      title: "Desenvolvedor Frontend",
+      status: "Ativa",
+      descricao: "Estamos à procura de um desenvolvedor frontend com experiência em React e Tailwind.",
+      dataCriacao: "2025-06-01",
+      local: "Maputo",
+      candidatos: [
+        { id: "1", nome: "Albertina Dlambe", status: "Entrevista marcada", avaliado: true },
+        { id: "2", nome: "Domingos A. Timane", status: "Em avaliação", avaliado: false }
+      ],
+      entrevistas: [
+        { id: "int1", name: "Albertina Dlambe", date: "2025-07-01", link: "https://meet.example.com/abc", candidateId: "1" },
+      ],
+    },
+    // Pode adicionar outras vagas
+  ]);
+
+  const getJobById = (id?: string) => jobs.find(job => job.id === id);
+
+  const avaliarCandidato = (jobId: string, candidateId: string) => {
+    setJobs(prevJobs =>
+      prevJobs.map(job => {
+        if (job.id !== jobId) return job;
+
+        const candidatosAtualizados = job.candidatos.map(c => {
+          if (c.id === candidateId) {
+            return { ...c, avaliado: true, status: "Avaliado" };
+          }
+          return c;
+        });
+
+        return { ...job, candidatos: candidatosAtualizados };
+      })
+    );
+  };
+
+  const agendarEntrevista = (jobId: string, interview: Interview) => {
+    setJobs(prevJobs =>
+      prevJobs.map(job => {
+        if (job.id !== jobId) return job;
+
+        return { ...job, entrevistas: [...job.entrevistas, interview] };
+      })
+    );
+  };
+
+  const fecharCandidaturas = (jobId: string) => {
+    setJobs(prevJobs =>
+      prevJobs.map(job => {
+        if (job.id !== jobId) return job;
+        return { ...job, status: "Fechada" };
+      })
+    );
   };
 
   const deleteJob = (id: string) => {
-    setJobs((prev) => prev.filter((job) => job._id !== id));
+    setJobs(prevJobs => prevJobs.filter(job => job.id !== id));
   };
 
   return (
-    <JobsContext.Provider value={{ jobs, addJob, deleteJob }}>
+    <JobContext.Provider
+      value={{
+        jobs,
+        getJobById,
+        avaliarCandidato,
+        agendarEntrevista,
+        fecharCandidaturas,
+        deleteJob, // Adicione aqui também
+      }}
+    >
       {children}
-    </JobsContext.Provider>
+    </JobContext.Provider>
   );
 };
 
-export const useJobs = () => {
-  const context = useContext(JobsContext);
-  if (!context) throw new Error('useJobs must be used within a JobsProvider');
+export const useJobContext = () => {
+  const context = useContext(JobContext);
+  if (!context) throw new Error("useJobContext must be used within a JobProvider");
   return context;
 };
