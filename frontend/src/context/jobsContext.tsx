@@ -47,7 +47,6 @@ interface JobContextType {
 // eslint-disable-next-line react-refresh/only-export-components
 export const JobContext = createContext<JobContextType | undefined>(undefined);
 
-// Mock inicial
 const initialJobs: Job[] = [
   {
     id: "1",
@@ -62,7 +61,12 @@ const initialJobs: Job[] = [
     status: "Aberta",
     candidatos: [
       { id: "1", nome: "Albertina Dlambe", status: "Entrevista marcada", avaliado: true },
-      { id: "2", nome: "Domingos A. Timane", status: "Em avaliação", avaliado: false }
+      { id: "2", nome: "Graça Boaventura Bila", status: "Em avaliação", avaliado: false },
+      { id: "3", nome: "Domingos A. Timane Jr", status: "Em avaliação", avaliado: false },
+      { id: "6", nome: "Neyla Feliza Américo Chavane", status: "Em avaliação", avaliado: false },
+      { id: "7", nome: "Gersina Guambe", status: "Em avaliação", avaliado: false },
+      { id: "10", nome: "Samuel Munguambe", status: "Em avaliação", avaliado: false },
+      { id: "11", nome: "Carla Ernesto", status: "Em avaliação", avaliado: false }
     ],
     entrevistas: [
       {
@@ -76,9 +80,10 @@ const initialJobs: Job[] = [
     local: undefined,
     descricao: undefined,
     dataCriacao: undefined,
-    candidateCount: 0
+    candidateCount: 7
   }
 ];
+
 
 // Ações do reducer
 type JobAction =
