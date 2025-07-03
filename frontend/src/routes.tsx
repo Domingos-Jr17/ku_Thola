@@ -29,9 +29,9 @@ import { InterviewFeedback } from "./pages/candidate/InterviewFeedback";
 
 // Páginas do recrutador
 import { RecruiterLogin } from "./pages/recruiter/RecruiterLogin";
-import { RecruiterDashboard } from "./pages/recruiter/RecruiterDashboard";
-import { ManageJobs } from "./pages/recruiter/ManageJobs";
-import { CandidatesList } from "./pages/recruiter/candidatesList";
+import { RecruiterDashboard } from "./pages/recruiter/rh/RecruiterDashboard";
+import { ManageJobs } from "./pages/recruiter/rh/ManageJobs";
+import { CandidatesList } from "./pages/recruiter/rh/candidatesList";
 import { CandidateEvaluation } from "./pages/recruiter/CandidateEvaluation";
 import { EvaluationsList } from "./pages/recruiter/EvaluationsList";
 import { CandidateInterview } from "./pages/recruiter/CandidateInterview";

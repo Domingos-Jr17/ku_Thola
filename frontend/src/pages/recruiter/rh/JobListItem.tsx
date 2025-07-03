@@ -1,8 +1,7 @@
-// src/components/recruiter/JobListItem.tsx
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
+import { useJobContext } from '@/hooks/useJobContext'; // Importe o hook correto
 
 
 interface Job {
@@ -20,7 +19,7 @@ interface Props {
 
 export const JobListItem: React.FC<Props> = ({ job }) => {
   const navigate = useNavigate();
-  const { deleteJob } = useJobs();
+  const { deleteJob } = useJobContext(); // Use o hook real
 
   const handleDelete = () => {
     const confirm = window.confirm(`Tem certeza que deseja eliminar a vaga "${job.title}"?`);
@@ -60,8 +59,4 @@ export const JobListItem: React.FC<Props> = ({ job }) => {
     </li>
   );
 };
-
-function useJobs(): { deleteJob: (id: string) => void } {
-  throw new Error('Function not implemented.');
-}
 

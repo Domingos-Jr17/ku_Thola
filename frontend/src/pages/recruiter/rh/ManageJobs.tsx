@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs';
-import { JobCreateForm } from './rh/JobCreateForm';
+import { JobCreateForm } from './JobCreateForm';
 import { useJobContext } from '@/hooks/useJobContext';
-import { JobListItem } from './rh/JobListItem';
+import { JobListItem } from './JobListItem';
 
 export const ManageJobs = () => {
   const { jobs } = useJobContext();
