@@ -1,6 +1,5 @@
-import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useJobs } from "@/context/jobsContext";
+import { useJobContext } from "@/hooks/useJobContext";
 import { Button } from "@/components/ui/Button";
 
 interface Candidate {
@@ -19,7 +18,7 @@ const mockCandidates: Candidate[] = [
 
 export const JobDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const { jobs } = useJobs();
+  const { jobs } = useJobContext();
   const navigate = useNavigate();
 
   const job = jobs.find(j => j._id === id);

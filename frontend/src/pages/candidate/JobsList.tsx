@@ -1,8 +1,7 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useJobs } from '@/context/jobsContext';
+import { useJobContext } from '@/hooks/useJobContext'; // Use o hook padrão do projeto
 import { Button } from '@/components/ui/Button';
-import type { jobProps } from '@/types/recruiterProps'; 
+import type { jobProps } from '@/types/recruiterProps';
 
 const JobCard = ({ job }: { job: jobProps }) => {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ const JobCard = ({ job }: { job: jobProps }) => {
 
   return (
     <li
-      key={job._id}
+      key={job.id || job._id}
       className={`bg-white shadow-md rounded-2xl p-6 border ${
         isExpired ? 'border-red-400 bg-red-50 opacity-70' : 'border-gray-200'
       } flex flex-col justify-between`}
@@ -49,7 +48,7 @@ const JobCard = ({ job }: { job: jobProps }) => {
       </div>
 
       <Button
-        onClick={() => navigate(`${job._id}`)}
+        onClick={() => navigate(`${job.id || job._id}`)}
         className="mt-auto w-full"
         aria-label={`Ver detalhes da vaga: ${job.title}`}
         disabled={isExpired}
@@ -62,7 +61,7 @@ const JobCard = ({ job }: { job: jobProps }) => {
 };
 
 export const JobsList = () => {
-  const { jobs } = useJobs();
+  const { jobs } = useJobContext();
   const hoje = new Date();
 
   // Ordenar vagas: não expiradas primeiro, depois expiradas
@@ -70,15 +69,11 @@ export const JobsList = () => {
     const aExpired = new Date(a.expirationDate) < hoje;
     const bExpired = new Date(b.expirationDate) < hoje;
 
-    // Se ambos têm o mesmo status, mantêm ordem original (ou por data crescente, se preferir)
     if (aExpired === bExpired) {
       return new Date(a.expirationDate).getTime() - new Date(b.expirationDate).getTime();
     }
-    // Se a está expirado e b não, b vem antes
     if (aExpired && !bExpired) return 1;
-    // Se b está expirado e a não, a vem antes
     if (!aExpired && bExpired) return -1;
-
     return 0;
   });
 
@@ -99,9 +94,21 @@ export const JobsList = () => {
             className="grid grid-cols-1 sm:grid-cols-2 gap-6"
             aria-label="Lista de vagas disponíveis"
           >
-            {sortedJobs.map((job) => (
-              <JobCard key={job._id} job={job} />
-            ))}
+            {sortedJobs.map((job) => {
+              // Map type to lowercase to match jobProps
+              const mappedJob = {
+                ...job,
+                type:
+                  job.type === "Presencial"
+                    ? "presencial"
+                    : job.type === "Virtual"
+                    ? "virtual"
+                    : job.type === "Híbrido"
+                    ? "híbrido"
+                    : job.type,
+              } as jobProps;
+              return <JobCard key={job.id || job._id} job={mappedJob} />;
+            })}
           </ul>
         )}
       </main>

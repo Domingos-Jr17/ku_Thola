@@ -1,6 +1,5 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useJobs } from '@/context/jobsContext';
+import { useJobContext } from "@/hooks/useJobContext";
 import { StatusBadge } from '@/components/ui/StatusBadge';
 
 interface Evaluation {
@@ -42,7 +41,8 @@ const mockEvaluations: Evaluation[] = [
 
 export const EvaluationsList = () => {
   const navigate = useNavigate();
-  const { jobs } = useJobs();
+
+  const { jobs } = useJobContext();
 
   const getJobTitle = (jobId: string) => {
     const job = jobs.find((j) => j._id === jobId);
@@ -91,3 +91,4 @@ export const EvaluationsList = () => {
     </div>
   );
 };
+

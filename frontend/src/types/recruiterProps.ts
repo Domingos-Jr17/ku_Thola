@@ -1,6 +1,7 @@
 // Tipos relacionados a recrutadores e gestão de vagas
 
 export interface jobProps {
+  id: string;
   candidateCount: number;
   _id: string;
   title: string;

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
-import { useJobContext } from "@/context/jobsContext";
+import { useJobContext } from "@/hooks/useJobContext";
 import { ScheduleInterviewModal } from "@/components/cards/forms/ScheduleInterviewModal";
+import { toast } from "sonner";
 
 export const JobDetailsPage = () => {
   const { id } = useParams();
@@ -26,12 +27,12 @@ export const JobDetailsPage = () => {
 
   const handleFecharCandidaturas = () => {
     fecharCandidaturas(jobData.id);
-    alert("Candidaturas fechadas com sucesso.");
+    toast.success("Candidaturas fechadas com sucesso!");
   };
 
   const handleAvaliar = (candidateId: string) => {
     avaliarCandidato(jobData.id, candidateId);
-    alert("Candidato avaliado com sucesso.");
+    toast.success("Candidato avaliado com sucesso!");
   };
 
   const openScheduleModal = (candidateId: string, candidateName: string) => {
@@ -50,7 +51,8 @@ export const JobDetailsPage = () => {
       candidateId: selectedCandidate.id,
     };
     agendarEntrevista(jobData.id, newInterview);
-    alert("Entrevista agendada com sucesso.");
+    toast.success("Entrevista agendada com sucesso!");
+    setIsModalOpen(false);
   };
 
   return (
@@ -58,17 +60,11 @@ export const JobDetailsPage = () => {
       <h1 className="text-2xl font-bold mb-4">Vaga: {jobData.title}</h1>
 
       <div className="bg-white p-4 shadow rounded-lg mb-6">
-        <p>
-          <strong>Status:</strong> {jobData.status}
-        </p>
-        <p>
-          <strong>Local:</strong> {jobData.local}
-        </p>
-        <p>
-          <strong>Data de criação:</strong> {jobData.dataCriacao}
-        </p>
+        <p><strong>Status:</strong> {jobData.status}</p>
+        <p><strong>Local:</strong> {jobData.local}</p>
+        <p><strong>Data de criação:</strong> {jobData.dataCriacao}</p>
         <p className="mt-2 text-gray-700 whitespace-pre-line">{jobData.descricao}</p>
-        {jobData.status === "Ativa" && (
+        {jobData.status === "Aberta" && (
           <Button className="mt-4" variant="destructive" onClick={handleFecharCandidaturas}>
             Fechar candidaturas
           </Button>
@@ -82,6 +78,7 @@ export const JobDetailsPage = () => {
           <TabsTrigger value="feedbacks">Feedbacks Finais</TabsTrigger>
         </TabsList>
 
+        {/* TAB: Candidatos */}
         <TabsContent value="candidatos">
           <ul className="space-y-4">
             {jobData.candidatos.length === 0 ? (
@@ -101,10 +98,20 @@ export const JobDetailsPage = () => {
                     <Button variant="outline" onClick={() => navigate(`/rh/candidato/${cand.id}`)}>
                       Ver Perfil
                     </Button>
-                    <Button variant="outline" onClick={() => handleAvaliar(cand.id)} disabled={cand.avaliado}>
-                      Avaliar
+
+                    {cand.avaliado ? (
+                      <Button variant="secondary" disabled>
+                        Avaliado ✓
+                      </Button>
+                    ) : (
+                      <Button variant="outline" onClick={() => handleAvaliar(cand.id)}>
+                        Avaliar
+                      </Button>
+                    )}
+
+                    <Button onClick={() => openScheduleModal(cand.id, cand.nome)}>
+                      Agendar Entrevista
                     </Button>
-                    <Button onClick={() => openScheduleModal(cand.id, cand.nome)}>Agendar Entrevista</Button>
                   </div>
                 </li>
               ))
@@ -112,6 +119,7 @@ export const JobDetailsPage = () => {
           </ul>
         </TabsContent>
 
+        {/* TAB: Entrevistas */}
         <TabsContent value="entrevistas">
           {jobData.entrevistas.length === 0 ? (
             <p className="text-gray-600">Nenhuma entrevista agendada.</p>
@@ -119,21 +127,16 @@ export const JobDetailsPage = () => {
             <ul className="space-y-3">
               {jobData.entrevistas.map((int) => (
                 <li key={int.id} className="p-4 border rounded shadow bg-white">
-                  <p>
-                    <strong>Nome:</strong> {int.name}
-                  </p>
-                  <p>
-                    <strong>Data:</strong> {new Date(int.date).toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>Link:</strong> {int.link || "Presencial"}
-                  </p>
+                  <p><strong>Nome:</strong> {int.name}</p>
+                  <p><strong>Data:</strong> {new Date(int.date).toLocaleString()}</p>
+                  <p><strong>Link:</strong> {int.link || "Presencial"}</p>
                 </li>
               ))}
             </ul>
           )}
         </TabsContent>
 
+        {/* TAB: Feedbacks */}
         <TabsContent value="feedbacks">
           <p className="text-gray-600">Funcionalidade em construção.</p>
         </TabsContent>

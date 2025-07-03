@@ -1,5 +1,5 @@
 // src/pages/recruiter/ScheduledInterviews.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { format } from "date-fns";
 import { pt } from "date-fns/locale";
