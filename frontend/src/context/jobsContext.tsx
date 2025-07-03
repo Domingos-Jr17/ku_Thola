@@ -55,7 +55,7 @@ const initialJobs: Job[] = [
     department: "Tecnologia",
     type: "Presencial",
     location: "Maputo",
-    expirationDate: "2025-07-01",
+    expirationDate: "2025-07-08",
     description: "Estamos à procura de um dev frontend com React e Tailwind.",
     requirements: ["React", "Tailwind", "HTML", "CSS"],
     status: "Aberta",
