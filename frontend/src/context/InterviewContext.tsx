@@ -1,5 +1,5 @@
-// src/context/InterviewContext.tsx 
-import React, { createContext, useContext, useState, type ReactNode } from "react";
+
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 export interface Interview {
   method: ReactNode;

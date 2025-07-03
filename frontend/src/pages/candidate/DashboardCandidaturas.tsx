@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { TimelineCandidatura } from "@/components/ui/TimelineCandidatura";
 import type { Candidatura } from "@/components/ui/TimelineCandidatura";
 import { Button } from "@/components/ui/Button";

@@ -1,4 +1,3 @@
-import React from "react";
 import { Accordion } from "@/components/ui/AccordionFAQ";
 import { Button } from "@/components/ui/Button";
 import { MessageCircle } from "lucide-react";

@@ -1,6 +1,4 @@
-// src/pages/rh/CandidateInterview.tsx
-
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { InterviewModal } from "@/components/ui/InterviewModal";
 import { useInterview } from "@/context/InterviewContext";
