@@ -13,7 +13,7 @@ import {
   User,
   BarChart2,
   CalendarClock,
-  Bell,
+  // Bell,
   ChevronDown,
   ChevronUp,
   PlusCircle,
@@ -51,7 +51,7 @@ export const Sidebar: React.FC = () => {
       icon: <Briefcase size={20} />,
       submenu: [
         { label: 'Ver Todas', icon: <List size={18} />, path: '/rh/vagas' },
-        { label: 'Criar Nova', icon: <PlusCircle size={18} />, path: '/rh/vagas/criar' },
+        { label: 'Criar Nova', icon: <PlusCircle size={18} />, path: '/rh/vagas' },
       ],
     },
     {
@@ -68,7 +68,7 @@ export const Sidebar: React.FC = () => {
       icon: <MessageCircle size={20} />,
       submenu: [
         { label: 'Mensagens', icon: <MessageCircle size={18} />, path: '/rh/comunicacao' },
-        { label: 'Notificações', icon: <Bell size={18} />, path: '/rh/notificacoes' }, // placeholder
+        // { label: 'Notificações', icon: <Bell size={18} />, path: '/rh/notificacoes' }, // placeholder
       ],
     },
     { label: 'Relatórios', icon: <BarChart2 size={20} />, path: '/rh/relatorios' },
