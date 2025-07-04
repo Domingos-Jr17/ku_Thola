@@ -31,19 +31,20 @@ import { InterviewFeedback } from "./pages/candidate/InterviewFeedback";
 import { RecruiterLogin } from "./pages/recruiter/auth/RecruiterLogin";
 import { RecruiterDashboard } from "./pages/recruiter/dashboard/RecruiterDashboard";
 import { ManageJobs } from "./pages/recruiter/jobs/ManageJobs";
-import { CandidatesList } from "./pages/recruiter/aplications/candidatesList";
+import CandidateComparison from "./pages/recruiter/aplications/candidatesComparison";
 import { CandidateEvaluation } from "./pages/recruiter/process/CandidateEvaluation";
 import { EvaluationsList } from "./pages/recruiter/process/EvaluationsList";
 import { CandidateInterview } from "./pages/recruiter/process/CandidateInterview";
 import { CandidateCommunication } from "./pages/recruiter/comunications/CandidateCommunication";
 import { CandidateNotificationsRh } from "./pages/recruiter/comunications/CandidateNotifications";
 import { JobHistory } from "./pages/recruiter/jobs/JobHistory";
-import JobMatching from "./pages/recruiter/jobs/JobMatching";
+import { JobMatching } from "./pages/recruiter/jobs/JobMatching";
 import { Messages } from "./pages/recruiter/comunications/Messages";
 import { Reports } from "./pages/recruiter/Reports";
 import { RecruiterProfile } from "./pages/recruiter/profile/RecruiterProfile";
 import { ScheduledInterviews } from "./pages/recruiter/process/ScheduledInterviews";
-import JobDetailsPage from "./pages/recruiter/jobs/JobDetailsPage1";
+import { JobDetailsPage } from "./pages/recruiter/jobs/JobDetailsPage1";
+import { CandidatesByJob } from "./pages/recruiter/aplications/CandidatesByJob";
 
 export function AppRoutes() {
   return (
@@ -86,11 +87,12 @@ export function AppRoutes() {
           {/* Principais rotas */}
           <Route path="dashboard" element={<RecruiterDashboard />} />
           <Route path="vagas" element={<ManageJobs />} />
-          <Route path="candidatos" element={<CandidatesList />} />
+          <Route path="candidatos" element={<CandidateComparison />} />
           <Route path="avaliacoes" element={<EvaluationsList />} />
           <Route path="historico" element={<JobHistory />} />
           <Route path="entrevistas" element={<ScheduledInterviews />} />
           <Route path="vagas/:id" element={<JobDetailsPage />} />
+          <Route path="/rh/vagas/:id/candidatos" element={<CandidatesByJob />} />
 
           {/* Job Matching */}
           <Route path="job-matching/:id" element={<JobMatching />} />

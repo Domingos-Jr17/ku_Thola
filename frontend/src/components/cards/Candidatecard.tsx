@@ -1,12 +1,45 @@
-import type { CandidateProps } from "@/types/candidateProps"; 
+import React from "react";
+import { Button } from "@/components/ui/Button";
+import { useNavigate } from "react-router-dom";
 
+interface Props {
+  candidate: {
+    id: string;
+    nome: string;
+    status: string;
+    avaliado: boolean;
+  };
+  onAvaliar: () => void;
+  onAgendar: () => void;
+}
 
-export const CandidateCard = ({ name, email, phone }: CandidateProps) => {
+export const CandidateCard: React.FC<Props> = ({ candidate, onAvaliar, onAgendar }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="p-4 bg-white rounded-xl border shadow">
-      <h3 className="text-md font-semibold text-[#111827]">{name}</h3>
-      <p className="text-sm text-gray-600">{email}</p>
-      <p className="text-sm text-gray-600">{phone}</p>
-    </div>
+    <li className="bg-gray-50 p-4 rounded shadow flex justify-between items-center">
+      <div>
+        <h3 className="font-semibold text-lg">{candidate.nome}</h3>
+        <p>Status: {candidate.status}</p>
+        <p>Avaliado: {candidate.avaliado ? "Sim" : "Não"}</p>
+      </div>
+      <div className="flex gap-2">
+        <Button variant="outline" onClick={() => navigate(`/rh/candidato/${candidate.id}`)}>
+          Ver Perfil
+        </Button>
+
+        {candidate.avaliado ? (
+          <Button variant="secondary" disabled>
+            Avaliado ✓
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={onAvaliar}>
+            Avaliar
+          </Button>
+        )}
+
+        <Button onClick={onAgendar}>Agendar Entrevista</Button>
+      </div>
+    </li>
   );
 };

@@ -3,20 +3,13 @@ import { useJobContext } from "@/hooks/useJobContext";
 import { Header } from "@/components/layout/headers";
 import { Footer } from "@/components/layout/footer";
 import { CandidateScoreCard } from "@/components/cards/CandidateScoreCard";
-
-// Mock de candidatos para demonstração
-const mockRankedCandidates = [
-  { id: "cand1", name: "Albertina Dlambe", score: 9, notes: "Excelentes habilidades em React e comunicação." },
-  { id: "cand2", name: "Graça Boaventura Bila", score: 8.5, notes: "Boa experiência em frontend e cultura de equipe." },
-  { id: "cand3", name: "Domingos A. Timane Jr", score: 8, notes: "Boa aptidão técnica e participação ativa." },
-];
+import { calculateCandidateScores } from "@/utils/calculateCandidateScores"; // novo import
 
 export const JobMatching = () => {
   const { id } = useParams<{ id: string }>();
   const { jobs } = useJobContext();
   const navigate = useNavigate();
 
-  // Busca vaga pelo id da URL
   const job = jobs.find((j) => j._id === id);
 
   if (!job) {
@@ -38,8 +31,7 @@ export const JobMatching = () => {
     );
   }
 
-  // TODO: substituir mockRankedCandidates pelo cálculo real baseado em job.candidatos
-  // const rankedCandidates = calculateCandidateScores(job.candidatos);
+  const rankedCandidates = calculateCandidateScores(job); // agora vem da função externa
 
   return (
     <div>
@@ -48,7 +40,6 @@ export const JobMatching = () => {
         <button
           onClick={() => navigate("/rh/vagas")}
           className="text-blue-600 mb-4 hover:underline"
-          aria-label="Voltar para lista de vagas"
         >
           ← Voltar para vagas
         </button>
@@ -59,12 +50,17 @@ export const JobMatching = () => {
           <strong>{job.title}</strong>
         </p>
 
-        {mockRankedCandidates.length === 0 ? (
+        {rankedCandidates.length === 0 ? (
           <p className="text-gray-600">Nenhum candidato encontrado para esta vaga.</p>
         ) : (
           <div className="space-y-4">
-            {mockRankedCandidates.map(({ id, name, score, notes }) => (
-              <CandidateScoreCard key={id} name={name} score={score} notes={notes} />
+            {rankedCandidates.map(({ id, name, score, notes }) => (
+              <CandidateScoreCard
+                key={id}
+                name={name}
+                score={score}
+                notes={notes}
+              />
             ))}
           </div>
         )}
@@ -73,5 +69,3 @@ export const JobMatching = () => {
     </div>
   );
 };
-
-export default JobMatching;

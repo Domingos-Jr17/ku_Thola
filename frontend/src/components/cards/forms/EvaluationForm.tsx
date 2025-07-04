@@ -3,54 +3,64 @@ import { InputGroup } from "@/components/ui/InputGroup";
 import { Button } from "@/components/ui/Button";
 
 type EvaluationData = {
-  technical: string;
-  communication: string;
-  culture: string;
+  technical: number;
+  communication: number;
+  culture: number;
   comments: string;
 };
 
-export const EvaluationForm = ({ onSubmit }: { onSubmit: (data: EvaluationData) => void }) => {
+interface EvaluationFormProps {
+  onSubmit: (data: EvaluationData) => void;
+}
+
+export const EvaluationForm: React.FC<EvaluationFormProps> = ({ onSubmit }) => {
   const [technical, setTechnical] = useState("");
   const [communication, setCommunication] = useState("");
   const [culture, setCulture] = useState("");
   const [comments, setComments] = useState("");
+  const [error, setError] = useState("");
+
+const handleNumberChange = (setter: (v: string) => void) => (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+) => {
+  const value = e.target.value;
+  if (
+    value === "" ||
+    (/^\d{1,2}$/.test(value) && Number(value) >= 0 && Number(value) <= 10)
+  ) {
+    setter(value);
+  }
+};
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      technical === "" ||
-      communication === "" ||
-      culture === ""
-    ) {
+
+    if (technical === "" || communication === "" || culture === "") {
+      setError("Por favor, preencha todas as notas de avaliação.");
       return;
     }
+
+    setError("");
+
     onSubmit({
-      technical,
-      communication,
-      culture,
+      technical: Number(technical),
+      communication: Number(communication),
+      culture: Number(culture),
       comments,
     });
+
+    // Resetar campos após envio
     setTechnical("");
     setCommunication("");
     setCulture("");
     setComments("");
   };
 
-  // Garante que só valores entre 0 e 10 sejam aceitos
-  const handleNumberChange = (setter: (v: string) => void) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const value = e.target.value;
-    if (
-      value === "" ||
-      (/^\d{1,2}$/.test(value) && Number(value) >= 0 && Number(value) <= 10)
-    ) {
-      setter(value);
-    }
-  };
-
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
+      {error && <p className="text-red-600 text-sm">{error}</p>}
+
       <InputGroup
         label="Habilidades Técnicas (0 a 10)"
         id="technical"
@@ -61,6 +71,7 @@ export const EvaluationForm = ({ onSubmit }: { onSubmit: (data: EvaluationData) 
         value={technical}
         onChange={handleNumberChange(setTechnical)}
       />
+
       <InputGroup
         label="Comunicação (0 a 10)"
         id="communication"
@@ -71,6 +82,7 @@ export const EvaluationForm = ({ onSubmit }: { onSubmit: (data: EvaluationData) 
         value={communication}
         onChange={handleNumberChange(setCommunication)}
       />
+
       <InputGroup
         label="Aptidão Cultural (0 a 10)"
         id="culture"
@@ -81,17 +93,21 @@ export const EvaluationForm = ({ onSubmit }: { onSubmit: (data: EvaluationData) 
         value={culture}
         onChange={handleNumberChange(setCulture)}
       />
+
       <InputGroup
         label="Comentários Adicionais"
         id="comments"
         textarea
         rows={4}
         value={comments}
-        onChange={e => setComments(e.target.value)}
+        onChange={(e) => setComments(e.target.value)}
       />
 
       <div className="flex justify-end">
-        <Button type="submit" disabled={technical === "" || communication === "" || culture === ""}>
+        <Button
+          type="submit"
+          disabled={technical === "" || communication === "" || culture === ""}
+        >
           Salvar Avaliação
         </Button>
       </div>

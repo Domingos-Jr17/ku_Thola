@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/Button";
-import { ApplicationCard } from "@/components/cards/ApplicationCard";
+import { ApplicationCard } from "@/components/cards/forms/ApplicationCard";
 
 type ApplicationProps = {
   jobId: string;
