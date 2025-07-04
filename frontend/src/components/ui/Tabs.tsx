@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 type TabsContextType = {
   activeTab: string;
@@ -9,13 +9,31 @@ const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
 export function Tabs({
   defaultValue,
+  value,
+  onValueChange,
   children,
 }: {
-  defaultValue: string;
+  defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
   children: ReactNode;
 }) {
-  const [activeTab, setActiveTab] = useState(defaultValue);
+  // Use internal state only if not controlled externally
+  const [internalActiveTab, setInternalActiveTab] = useState(defaultValue || "");
 
+  // Determine if component is controlled or uncontrolled
+  const isControlled = value !== undefined;
+  const activeTab = isControlled ? value : internalActiveTab;
+
+  const setActiveTab = (tab: string) => {
+    // If controlled externally, call the callback
+    if (isControlled && onValueChange) {
+      onValueChange(tab);
+    } else {
+      // Otherwise update internal state
+      setInternalActiveTab(tab);
+    }
+  };
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab }}>
       <div className="w-full">{children}</div>
@@ -30,7 +48,6 @@ export function TabsList({ children }: { children: ReactNode }) {
     </div>
   );
 }
-
 export function TabsTrigger({
   value,
   children,
@@ -40,9 +57,7 @@ export function TabsTrigger({
 }) {
   const context = useContext(TabsContext);
   if (!context) throw new Error("TabsTrigger must be used within Tabs");
-
   const { activeTab, setActiveTab } = context;
-
   const isActive = activeTab === value;
 
   return (
@@ -68,6 +83,5 @@ export function TabsContent({
 }) {
   const context = useContext(TabsContext);
   if (!context) throw new Error("TabsContent must be used within Tabs");
-
   return context.activeTab === value ? <div>{children}</div> : null;
 }

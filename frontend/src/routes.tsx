@@ -28,22 +28,22 @@ import { CandidateNotifications } from "./pages/candidate/candidateNotification"
 import { InterviewFeedback } from "./pages/candidate/InterviewFeedback";
 
 // Páginas do recrutador
-import { RecruiterLogin } from "./pages/recruiter/RecruiterLogin";
-import { RecruiterDashboard } from "./pages/recruiter/rh/RecruiterDashboard";
-import { ManageJobs } from "./pages/recruiter/rh/ManageJobs";
-import { CandidatesList } from "./pages/recruiter/rh/candidatesList";
-import { CandidateEvaluation } from "./pages/recruiter/CandidateEvaluation";
-import { EvaluationsList } from "./pages/recruiter/EvaluationsList";
-import { CandidateInterview } from "./pages/recruiter/rh/CandidateInterview";
-import { CandidateCommunication } from "./pages/recruiter/CandidateCommunication";
-import { CandidateNotificationsRh } from "./pages/recruiter/CandidateNotifications";
-import { JobHistory } from "./pages/recruiter/JobHistory";
-import JobMatching from "./pages/recruiter/JobMatching";
-import { Messages } from "./pages/recruiter/Messages";
+import { RecruiterLogin } from "./pages/recruiter/auth/RecruiterLogin";
+import { RecruiterDashboard } from "./pages/recruiter/dashboard/RecruiterDashboard";
+import { ManageJobs } from "./pages/recruiter/jobs/ManageJobs";
+import { CandidatesList } from "./pages/recruiter/aplications/candidatesList";
+import { CandidateEvaluation } from "./pages/recruiter/process/CandidateEvaluation";
+import { EvaluationsList } from "./pages/recruiter/process/EvaluationsList";
+import { CandidateInterview } from "./pages/recruiter/process/CandidateInterview";
+import { CandidateCommunication } from "./pages/recruiter/comunications/CandidateCommunication";
+import { CandidateNotificationsRh } from "./pages/recruiter/comunications/CandidateNotifications";
+import { JobHistory } from "./pages/recruiter/jobs/JobHistory";
+import JobMatching from "./pages/recruiter/jobs/JobMatching";
+import { Messages } from "./pages/recruiter/comunications/Messages";
 import { Reports } from "./pages/recruiter/Reports";
-import { RecruiterProfile } from "./pages/recruiter/RecruiterProfile";
-import { ScheduledInterviews } from "./pages/recruiter/rh/ScheduledInterviews";
-import JobDetailsPage from "./pages/recruiter/rh/JobDetailsPage1";
+import { RecruiterProfile } from "./pages/recruiter/profile/RecruiterProfile";
+import { ScheduledInterviews } from "./pages/recruiter/process/ScheduledInterviews";
+import JobDetailsPage from "./pages/recruiter/jobs/JobDetailsPage1";
 
 export function AppRoutes() {
   return (

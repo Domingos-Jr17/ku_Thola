@@ -1,4 +1,3 @@
-// src/pages/rh/CandidateNotifications.tsx
 import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { InputGroup } from "@/components/ui/InputGroup";
