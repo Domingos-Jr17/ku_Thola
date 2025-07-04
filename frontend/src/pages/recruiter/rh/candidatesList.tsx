@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { JobMatchingScore } from "@/components/cards/JobMatchingScore";
-import { useCandidateContext } from "@/context/useCandidateContext";
+import { useCandidateContext } from "@/hooks/useCandidateContext";
 
 // Simulação de requisitos de uma vaga (poderia vir via contexto)
 const jobRequirements = ["React", "TypeScript", "CSS", "HTML"];

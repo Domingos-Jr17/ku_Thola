@@ -55,6 +55,48 @@ const initialJobs: Job[] = [
     department: "Tecnologia",
     type: "Presencial",
     location: "Maputo",
+    expirationDate: "2025-07-07",
+    description: "Estamos à procura de um dev frontend com React e Tailwind.",
+    requirements: ["React", "Tailwind", "HTML", "CSS"],
+    status: "Aberta",
+    
+     candidatos: [
+      { id: "1", nome: "Albertina Dlambe", status: "Entrevista marcada", avaliado: true },
+      { id: "2", nome: "Graça Boaventura Bila", status: "Em avaliação", avaliado: false },
+      { id: "3", nome: "Domingos A. Timane Jr", status: "Em avaliação", avaliado: false },
+      { id: "6", nome: "Neyla Feliza Américo Chavane", status: "Em avaliação", avaliado: false },
+      { id: "7", nome: "Gersina Guambe", status: "Em avaliação", avaliado: false },
+      { id: "10", nome: "Samuel Munguambe", status: "Em avaliação", avaliado: false },
+      { id: "11", nome: "Carla Ernesto", status: "Em avaliação", avaliado: false }
+    ],
+    entrevistas: [
+      {
+        id: "int1",
+        name: "Albertina Dlambe",
+        date: "2025-07-01",
+        link: "https://meet.example.com/abc",
+        candidateId: "1"
+      },
+      {
+        id: "int2",
+        name: "Domingos A. Timane Jr",
+        date: "2025-07-04",
+        link: "https://meet.example.com/abc",
+        candidateId: "2"
+      }
+    ],
+    local: undefined,
+    descricao: undefined,
+    dataCriacao: undefined,
+    candidateCount: 7
+  },
+  {
+    id: "2",
+    _id: "2",
+    title: "Desenvolvedor backend",
+    department: "Tecnologia",
+    type: "Presencial",
+    location: "Maputo",
     expirationDate: "2025-07-01",
     description: "Estamos à procura de um dev frontend com React e Tailwind.",
     requirements: ["React", "Tailwind", "HTML", "CSS"],
@@ -114,7 +156,7 @@ const jobsReducer = (state: Job[], action: JobAction): Job[] => {
               )
             }
           : job
-      );
+  );
 
     case "AGENDAR_ENTREVISTA":
       return state.map(job =>

@@ -1,9 +1,9 @@
-// src/context/InterviewContext.tsx 
-import React, { createContext, useContext, useState, type ReactNode } from "react";
+
+import  { createContext, useState, type ReactNode } from "react";
 
 export interface Interview {
   method: ReactNode;
-  id: string; // id do candidato
+  id: string; 
   name: string;
   email: string;
   jobTitle: string;
@@ -13,7 +13,7 @@ export interface Interview {
   candidateId: string;
 }
 
-interface InterviewContextType {
+export interface InterviewContextType {
   interviews: Interview[];
   addInterview: (interview: Interview) => void;
   updateInterview: (id: string, updated: Partial<Interview>) => void;
@@ -21,7 +21,7 @@ interface InterviewContextType {
   getInterviewById: (id: string) => Interview | undefined;
 }
 
-const InterviewContext = createContext<InterviewContextType | undefined>(undefined);
+export const InterviewContext = createContext<InterviewContextType | undefined>(undefined);
 
 export const InterviewProvider = ({ children }: { children: ReactNode }) => {
   const [interviews, setInterviews] = useState<Interview[]>([]);
@@ -53,10 +53,5 @@ export const InterviewProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useInterview = (): InterviewContextType => {
-  const context = useContext(InterviewContext);
-  if (!context) {
-    throw new Error("useInterview deve ser usado dentro do InterviewProvider");
-  }
-  return context;
-};
+// eslint-disable-next-line react-refresh/only-export-components
+

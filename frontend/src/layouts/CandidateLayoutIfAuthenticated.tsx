@@ -1,5 +1,3 @@
-// src/layouts/WithCandidateLayoutIfAuthenticated.tsx
-// src/layouts/WithCandidateLayoutIfAuthenticated.tsx
 import type { ReactNode } from "react";
 import { Header } from "@/components/layout/headers";
 import { Footer } from "@/components/layout/footer";

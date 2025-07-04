@@ -1,9 +1,8 @@
-// src/pages/rh/CandidateInterview.tsx
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { InterviewModal } from "@/components/ui/InterviewModal";
-import { useInterview } from "@/context/InterviewContext";
+import { useInterview } from "@/hooks/useInterview";
 
 export const CandidateInterview = () => {
   const { id } = useParams<{ id: string }>();

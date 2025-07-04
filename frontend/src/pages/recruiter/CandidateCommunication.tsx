@@ -1,5 +1,4 @@
-// src/pages/rh/ComunicacaoCandidato.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { InputGroup } from "@/components/ui/InputGroup";
 import { Button } from "@/components/ui/Button";

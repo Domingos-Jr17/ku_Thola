@@ -1,4 +1,3 @@
-// src/pages/recruiter/ScheduledInterviews.tsx
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { format } from "date-fns";

@@ -34,7 +34,7 @@ import { ManageJobs } from "./pages/recruiter/rh/ManageJobs";
 import { CandidatesList } from "./pages/recruiter/rh/candidatesList";
 import { CandidateEvaluation } from "./pages/recruiter/CandidateEvaluation";
 import { EvaluationsList } from "./pages/recruiter/EvaluationsList";
-import { CandidateInterview } from "./pages/recruiter/CandidateInterview";
+import { CandidateInterview } from "./pages/recruiter/rh/CandidateInterview";
 import { CandidateCommunication } from "./pages/recruiter/CandidateCommunication";
 import { CandidateNotificationsRh } from "./pages/recruiter/CandidateNotifications";
 import { JobHistory } from "./pages/recruiter/JobHistory";
@@ -42,7 +42,7 @@ import JobMatching from "./pages/recruiter/JobMatching";
 import { Messages } from "./pages/recruiter/Messages";
 import { Reports } from "./pages/recruiter/Reports";
 import { RecruiterProfile } from "./pages/recruiter/RecruiterProfile";
-import { ScheduledInterviews } from "./pages/recruiter/ScheduledInterviews";
+import { ScheduledInterviews } from "./pages/recruiter/rh/ScheduledInterviews";
 import JobDetailsPage from "./pages/recruiter/rh/JobDetailsPage1";
 
 export function AppRoutes() {

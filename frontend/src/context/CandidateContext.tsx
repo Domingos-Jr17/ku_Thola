@@ -1,6 +1,4 @@
-// src/context/candidate/CandidateContext.tsx
-
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useState, type ReactNode } from "react";
 
 // Tipo do candidato
 export type Candidate = {
@@ -21,7 +19,7 @@ export type Candidate = {
 };
 
 // Tipagem do contexto
-type CandidateContextType = {
+  export type CandidateContextType = {
   candidates: Candidate[];
   addCandidate: (candidate: Candidate) => void;
   updateCandidate: (id: string, data: Partial<Candidate>) => void;
@@ -29,7 +27,8 @@ type CandidateContextType = {
 };
 
 // Criação do contexto
-const CandidateContext = createContext<CandidateContextType | undefined>(undefined);
+// eslint-disable-next-line react-refresh/only-export-components
+export const CandidateContext = createContext<CandidateContextType | undefined>(undefined);
 
 // Componente Provider
 export const CandidateProvider = ({ children }: { children: ReactNode }) => {
@@ -208,12 +207,5 @@ export const CandidateProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Hook customizado para consumir o contexto com segurança
-export const useCandidateContext = (): CandidateContextType => {
-  const context = useContext(CandidateContext);
-  if (!context) {
-    throw new Error("useCandidateContext must be used within a CandidateProvider");
-  }
-  return context;
-};
+
 

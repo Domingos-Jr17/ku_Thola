@@ -1,14 +1,11 @@
-// src/pages/Recruiter/CandidateProfile.tsx
 import { useParams, useNavigate } from "react-router-dom";
-import { Header } from "@/components/layout/headers";
-import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/Button";
-import { useCandidateContext } from "@/context/useCandidateContext";
+import { useCandidateContext } from "@/hooks/useCandidateContext";
 
 export const CandidateProfile = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { candidates } = useCandidateContext(); // <-- Usa o contexto
+  const { candidates } = useCandidateContext(); 
 
   const candidate = candidates.find((c) => c.id === id);
 
@@ -18,7 +15,7 @@ export const CandidateProfile = () => {
 
   return (
     <div>
-      <Header />
+     
       <main className="max-w-4xl mx-auto p-6 bg-white shadow rounded mt-8">
         <Button onClick={() => navigate(-1)}>← Voltar</Button>
 
@@ -40,7 +37,7 @@ export const CandidateProfile = () => {
           <Button onClick={() => navigate(`/rh/candidato/${id}/feedback`)}>Feedback Final</Button>
         </div>
       </main>
-      <Footer />
+  
     </div>
   );
 };
