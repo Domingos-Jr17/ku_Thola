@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { format, parseISO } from "date-fns";
+import { pt } from "date-fns/locale";
 
 interface CandidateMessage {
   id: string;
@@ -14,14 +16,36 @@ const mockMessages: CandidateMessage[] = [
   { id: "3", name: "Domingos Timane", email: "domingosalfredotimane@gmail.com", lastMessage: "Vaga encerrada.", date: "2025-06-26" },
 ];
 
-export const Messages = () => {
+const MessageRow = ({ msg }: { msg: CandidateMessage }) => {
   const navigate = useNavigate();
 
   return (
+    <tr className="border-b hover:bg-gray-50 transition" key={msg.id}>
+      <td className="px-4 py-2">{msg.name}</td>
+      <td className="px-4 py-2">{msg.email}</td>
+      <td className="px-4 py-2">{msg.lastMessage}</td>
+      <td className="px-4 py-2">
+        {format(parseISO(msg.date), "dd 'de' MMMM 'de' yyyy", { locale: pt })}
+      </td>
+      <td className="px-4 py-2">
+        <button
+          aria-label={`Ver conversa com ${msg.name}`}
+          className="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+          onClick={() => navigate(`/rh/candidato/${msg.id}/comunicacao`)}
+        >
+          Ver Conversa
+        </button>
+      </td>
+    </tr>
+  );
+};
+
+export const Messages = () => {
+  return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Mensagens</h1>
-      <div className="bg-white rounded shadow">
-        <table className="w-full table-auto">
+      <div className="bg-white rounded shadow overflow-x-auto">
+        <table className="w-full table-auto min-w-[600px]">
           <thead className="bg-gray-100 text-left">
             <tr>
               <th className="px-4 py-2">Candidato</th>
@@ -33,20 +57,7 @@ export const Messages = () => {
           </thead>
           <tbody>
             {mockMessages.map((msg) => (
-              <tr key={msg.id} className="border-b hover:bg-gray-50 transition">
-                <td className="px-4 py-2">{msg.name}</td>
-                <td className="px-4 py-2">{msg.email}</td>
-                <td className="px-4 py-2">{msg.lastMessage}</td>
-                <td className="px-4 py-2">{msg.date}</td>
-                <td className="px-4 py-2">
-                  <button
-                    className="text-blue-600 hover:underline"
-                    onClick={() => navigate(`/rh/candidato/${msg.id}/comunicacao`)}
-                  >
-                    Ver Conversa
-                  </button>
-                </td>
-              </tr>
+              <MessageRow key={msg.id} msg={msg} />
             ))}
           </tbody>
         </table>

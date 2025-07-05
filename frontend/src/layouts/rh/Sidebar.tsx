@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   Home,
   Briefcase,
@@ -8,12 +8,10 @@ import {
   Menu,
   LogOut,
   ChevronLeft,
-  //LucideCalendarClock,
   MessageCircle,
   User,
   BarChart2,
   CalendarClock,
-  // Bell,
   ChevronDown,
   ChevronUp,
   PlusCircle,
@@ -23,7 +21,7 @@ import {
 type NavItem = {
   label: string;
   icon: React.ReactNode;
-  path?: string; // se item com link direto
+  path?: string;
   submenu?: NavItem[];
 };
 
@@ -31,19 +29,23 @@ export const Sidebar: React.FC = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  // Controla os submenus abertos (label do menu)
   const [openMenus, setOpenMenus] = useState<string[]>([]);
+
+  useEffect(() => {
+    const savedCollapsed = localStorage.getItem("sidebar_collapsed");
+    if (savedCollapsed) setCollapsed(JSON.parse(savedCollapsed));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sidebar_collapsed", JSON.stringify(collapsed));
+  }, [collapsed]);
 
   const toggleMenu = (label: string) => {
     setOpenMenus((prev) =>
-      prev.includes(label)
-        ? prev.filter((item) => item !== label)
-        : [...prev, label]
+      prev.includes(label) ? prev.filter((item) => item !== label) : [...prev, label]
     );
   };
 
-  // Estrutura do menu agrupado
   const navItems: NavItem[] = [
     { label: 'Dashboard', icon: <Home size={20} />, path: '/rh/dashboard' },
     {
@@ -68,28 +70,26 @@ export const Sidebar: React.FC = () => {
       icon: <MessageCircle size={20} />,
       submenu: [
         { label: 'Mensagens', icon: <MessageCircle size={18} />, path: '/rh/comunicacao' },
-        // { label: 'Notificações', icon: <Bell size={18} />, path: '/rh/notificacoes' }, // placeholder
       ],
     },
     { label: 'Relatórios', icon: <BarChart2 size={20} />, path: '/rh/relatorios' },
     { label: 'Perfil', icon: <User size={20} />, path: '/rh/perfil' },
   ];
 
-  const isActive = (path?: string) => path ? location.pathname.startsWith(path) : false;
-
   const renderNavItem = (item: NavItem) => {
     const isOpen = openMenus.includes(item.label);
     const hasSubmenu = !!item.submenu?.length;
 
-    // Item com submenu
     if (hasSubmenu) {
-      // Marcar ativo se algum submenu ativo
-      const activeSub = item.submenu!.some(sub => isActive(sub.path));
+      // Verifica se algum submenu está ativo para destacar
+      const activeSub = item.submenu!.some(sub => location.pathname.startsWith(sub.path || ''));
 
       return (
         <li key={item.label}>
           <button
             onClick={() => toggleMenu(item.label)}
+            aria-expanded={isOpen}
+            aria-controls={`submenu-${item.label}`}
             className={`flex items-center justify-between w-full px-4 py-2 rounded-lg transition-colors duration-200
               ${
                 activeSub
@@ -102,28 +102,31 @@ export const Sidebar: React.FC = () => {
               {item.icon}
               {!collapsed && item.label}
             </span>
-            {!collapsed && (
-              isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-            )}
+            {!collapsed && (isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />)}
           </button>
-          {/* submenu */}
+
           {isOpen && !collapsed && (
-            <ul className="pl-12 mt-2 space-y-1">
+            <ul
+              id={`submenu-${item.label}`}
+              role="menu"
+              className="pl-12 mt-2 space-y-1"
+            >
               {item.submenu!.map((sub) => (
                 <li key={sub.label}>
-                  <Link
+                  <NavLink
                     to={sub.path!}
-                    className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors duration-200
-                      ${
-                        isActive(sub.path)
+                    onClick={() => setMobileOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors duration-200 ${
+                        isActive
                           ? 'bg-blue-700 text-white'
                           : 'text-gray-300 hover:bg-blue-600 hover:text-white'
-                      }
-                    `}
+                      }`
+                    }
                   >
                     {sub.icon}
                     <span>{sub.label}</span>
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -132,31 +135,25 @@ export const Sidebar: React.FC = () => {
       );
     }
 
-    // Item simples
     return (
       <li key={item.label}>
-        <Link
+        <NavLink
           to={item.path!}
-          className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors duration-200
-            ${
-              isActive(item.path)
+          onClick={() => setMobileOpen(false)}
+          className={({ isActive }) =>
+            `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors duration-200 ${
+              isActive
                 ? 'bg-blue-600 text-white'
                 : 'text-gray-300 hover:bg-blue-700 hover:text-white'
-            }
-          `}
+            }`
+          }
         >
           {item.icon}
           {!collapsed && item.label}
-        </Link>
+        </NavLink>
       </li>
     );
   };
-
-  const renderLinks = () => (
-    <ul className="space-y-2 mt-6">
-      {navItems.map(renderNavItem)}
-    </ul>
-  );
 
   return (
     <>
@@ -170,52 +167,54 @@ export const Sidebar: React.FC = () => {
 
       {/* Sidebar */}
       <div
-        className={`${
-          collapsed ? 'w-16' : 'w-64'
-        } hidden md:flex flex-col min-h-screen bg-[#1E3A8A] text-white transition-all duration-300`}
+        className={`${collapsed ? 'w-16' : 'w-64'} hidden md:flex flex-col min-h-screen bg-[#1E3A8A] text-white transition-all duration-300`}
       >
         <div className="flex items-center justify-between p-4">
           {!collapsed && <h2 className="text-2xl font-bold">Ku Thola</h2>}
           <button onClick={() => setCollapsed(!collapsed)} className="text-white" aria-label="Toggle collapse sidebar">
-            <ChevronLeft
-              className={`transition-transform ${collapsed ? 'rotate-180' : ''}`}
-            />
+            <ChevronLeft className={`transition-transform ${collapsed ? 'rotate-180' : ''}`} />
           </button>
         </div>
 
-        {renderLinks()}
+        <ul className="space-y-2 mt-6">
+          {navItems.map(renderNavItem)}
+        </ul>
 
-        {/* Sair */}
+        {/* Logout */}
         <div className="mt-auto p-4">
-          <Link
+          <NavLink
             to="/"
             className="flex items-center gap-2 px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white"
+            onClick={() => setMobileOpen(false)}
           >
             <LogOut size={20} />
             {!collapsed && <span>Sair</span>}
-          </Link>
+          </NavLink>
         </div>
       </div>
 
       {/* Mobile Sidebar Drawer */}
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-40" onClick={() => setMobileOpen(false)}>
-          <div className="w-64 bg-[#1E3A8A] text-white h-full p-4" onClick={e => e.stopPropagation()}>
+          <div className="w-64 bg-[#1E3A8A] text-white h-screen p-4" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Ku Thola</h2>
               <button onClick={() => setMobileOpen(false)} aria-label="Close menu">
                 <ChevronLeft />
               </button>
             </div>
-            {renderLinks()}
+            <ul className="space-y-2 mt-6">
+              {navItems.map(renderNavItem)}
+            </ul>
             <div className="mt-auto p-4">
-              <Link
+              <NavLink
                 to="/"
                 className="flex items-center gap-2 px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white"
+                onClick={() => setMobileOpen(false)}
               >
                 <LogOut size={20} />
                 <span>Sair</span>
-              </Link>
+              </NavLink>
             </div>
           </div>
         </div>

@@ -1,24 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-interface Props {
-  path: string;
-}
+const labelMap: Record<string, string> = {
+  dashboard: "Painel",
+  vagas: "Vagas",
+  candidatos: "Candidatos",
+  avaliacoes: "Avaliações",
+  candidato: "Candidato",
+  avaliacao: "Avaliação",
+  feedback: "Feedback",
+  perfil: "Perfil",
+};
 
-export const RecruiterBreadcrumb = ({ path }: Props) => {
-  const parts = path.split("/").filter(Boolean);
+const format = (slug: string) => {
+  if (labelMap[slug]) return labelMap[slug];
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
 
-  const format = (slug: string) => {
-    return slug
-      .replace("-", " ")
-      .replace("dashboard", "Painel")
-      .replace("vagas", "Vagas")
-      .replace("candidatos", "Candidatos")
-      .replace("avaliacoes", "Avaliações")
-      .replace("candidato", "Candidato")
-      .replace("avaliacao", "Avaliação")
-      .replace("feedback", "Feedback")
-      .replace("perfil", "Perfil");
-  };
+export const RecruiterBreadcrumb = () => {
+  const location = useLocation();
+  const parts = location.pathname.split("/").filter(Boolean);
 
   return (
     <nav className="text-sm text-gray-600 space-x-2">
@@ -29,7 +32,7 @@ export const RecruiterBreadcrumb = ({ path }: Props) => {
         const route = "/" + parts.slice(0, index + 1).join("/");
         return (
           <span key={index}>
-            {" / "}
+            {index > 0 && " / "}
             <Link to={route} className="hover:text-blue-600">
               {format(part)}
             </Link>

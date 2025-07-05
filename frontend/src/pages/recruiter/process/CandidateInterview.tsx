@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { InterviewModal } from "@/components/ui/InterviewModal";
@@ -7,6 +6,7 @@ import { useInterview } from "@/hooks/useInterview";
 export const CandidateInterview = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [submitted, setSubmitted] = useState(false);
 
@@ -20,19 +20,24 @@ export const CandidateInterview = () => {
   const handleConfirm = (data: { date: string; link: string; notes: string }) => {
     if (!id) return;
 
-    // Adiciona a entrevista no contexto global
-    addInterview({
-        candidateId: id,
-        ...data,
-        id: "",
-        name: "",
-        email: "",
-        jobTitle: "",
-        method: undefined
-    });
+    // Aqui você pode complementar os dados do candidato se tiver acesso
+    // ou buscar via contexto/estado global para preencher nome, email, etc.
+
+    const newInterview = {
+      id: `int-${Date.now()}`, // gera um id único simples
+      candidateId: id,
+      name: "",     // Ideal preencher com o nome do candidato
+      email: "",    // Ideal preencher com email do candidato
+      jobTitle: "", // Pode ser informado também
+      method: undefined, // Se tiver o método da entrevista (presencial, online...)
+      ...data,
+    };
+
+    addInterview(newInterview);
 
     setSubmitted(true);
 
+    // Depois de 1.5s, volta para perfil do candidato
     setTimeout(() => {
       navigate(`/rh/candidato/${id}`);
     }, 1500);

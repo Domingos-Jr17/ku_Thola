@@ -13,9 +13,18 @@ export const CandidateNotificationsRh = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [sentNotifications, setSentNotifications] = useState<NotificationItem[]>([]);
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isValidEmail(email)) {
+      alert("Por favor, informe um email válido.");
+      return;
+    }
 
     const newNotification: NotificationItem = {
       recipientEmail: email,
@@ -27,6 +36,9 @@ export const CandidateNotificationsRh = () => {
     setEmail("");
     setSubject("");
     setMessage("");
+    setSuccessMsg("Notificação enviada com sucesso!");
+
+    setTimeout(() => setSuccessMsg(""), 4000);
   };
 
   return (
@@ -62,8 +74,9 @@ export const CandidateNotificationsRh = () => {
           required
         />
 
-        <div className="flex justify-end">
+        <div className="flex flex-col items-end gap-2">
           <Button type="submit">Enviar</Button>
+          {successMsg && <p className="text-green-600">{successMsg}</p>}
         </div>
       </form>
 

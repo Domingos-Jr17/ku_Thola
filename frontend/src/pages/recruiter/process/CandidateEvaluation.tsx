@@ -10,21 +10,29 @@ interface EvaluationData {
   comments: string;
 }
 
-
 export const CandidateEvaluation = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-const handleSubmit = (data: EvaluationData) => {
-  // Enviar para API ou contexto aqui
-  console.log('Dados de avaliação:', data);
+  const handleSubmit = async (data: EvaluationData) => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Simule envio para API ou contexto
+      // await avaliarCandidatoDetalhado(id, data);
+      console.log('Dados de avaliação:', data);
 
-  // TODO: salvar no contexto ou API
-  // ex: avaliarCandidatoDetalhado(id, data)
-
-  setModalOpen(true);
-};
+      setModalOpen(true);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      setError('Falha ao salvar avaliação. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const confirmAndNavigate = () => {
     setModalOpen(false);
@@ -33,7 +41,6 @@ const handleSubmit = (data: EvaluationData) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-    
       <main className="flex-grow p-6 bg-gray-50">
         <div className="max-w-3xl mx-auto bg-white rounded shadow p-6">
           <button
@@ -46,11 +53,13 @@ const handleSubmit = (data: EvaluationData) => {
 
           <h1 className="text-2xl font-semibold mb-6">Avaliação do Candidato</h1>
 
-         <EvaluationForm onSubmit={(data) => handleSubmit(data)} />
+          {error && <p className="text-red-600 mb-4">{error}</p>}
 
+          <EvaluationForm onSubmit={handleSubmit} />
+
+          {loading && <p className="mt-4 text-gray-600">Enviando avaliação...</p>}
         </div>
       </main>
-     
 
       <FeedbackModal
         isOpen={modalOpen}

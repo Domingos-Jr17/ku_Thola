@@ -1,76 +1,113 @@
-// src/components/recruiter/ScheduleInterviewModal.tsx
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { Dialog } from "@headlessui/react";
 import { Button } from "@/components/ui/Button";
 
-interface ScheduleInterviewModalProps {
+type InterviewMethod = "Presencial" | "Zoom" | "Google Meet";
+
+interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (date: string, time: string, link: string) => void;
-  candidateName: string;
+  onSubmit: (date: string, time: string, method: InterviewMethod) => void;
+  candidateName?: string;
+  initialDate?: string;
+  initialTime?: string;
+  initialMethod?: InterviewMethod;
+  isRescheduling?: boolean;
 }
 
-export const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({
+export const ScheduleInterviewModal = ({
   isOpen,
   onClose,
   onSubmit,
-  candidateName,
-}) => {
+  candidateName = "",
+  initialDate = "",
+  initialTime = "",
+  initialMethod = "Presencial",
+  isRescheduling = false,
+}: Props) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [link, setLink] = useState("");
+  const [method, setMethod] = useState<InterviewMethod>("Presencial");
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (isOpen) {
+      setDate(initialDate);
+      setTime(initialTime);
+      setMethod(initialMethod);
+    }
+  }, [isOpen, initialDate, initialTime, initialMethod]);
 
   const handleSubmit = () => {
-    if (!date || !time) {
-      alert("Por favor, selecione a data e hora da entrevista.");
-      return;
-    }
-    onSubmit(date, time, link);
+    if (!date || !time || !method) return;
+    onSubmit(date, time, method);
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-4">Agendar entrevista - {candidateName}</h2>
-        <div className="flex flex-col gap-4">
-          <label>
-            Data:
-            <input
-              type="date"
-              className="mt-1 w-full border rounded px-3 py-2"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </label>
-          <label>
-            Hora:
-            <input
-              type="time"
-              className="mt-1 w-full border rounded px-3 py-2"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-            />
-          </label>
-          <label>
-            Link (opcional):
-            <input
-              type="url"
-              placeholder="https://meet.example.com/..."
-              className="mt-1 w-full border rounded px-3 py-2"
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
-            />
-          </label>
-        </div>
-        <div className="mt-6 flex justify-end gap-4">
-          <Button variant="outline" onClick={onClose}>
-            Cancelar
-          </Button>
-          <Button onClick={handleSubmit}>Agendar</Button>
-        </div>
+    <Dialog open={isOpen} onClose={onClose} className="relative z-50">
+      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <Dialog.Panel className="bg-white max-w-md w-full p-6 rounded-lg shadow-xl space-y-4">
+          <Dialog.Title className="text-lg font-bold">
+            {isRescheduling ? "Reagendar Entrevista" : "Agendar Entrevista"}
+          </Dialog.Title>
+
+          {candidateName && (
+            <p className="text-sm text-gray-700 mb-2">
+              Candidato: <strong>{candidateName}</strong>
+            </p>
+          )}
+
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium mb-1">Data</label>
+              <input
+                type="date"
+                className="w-full border rounded px-3 py-2"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Hora</label>
+              <input
+                type="time"
+                className="w-full border rounded px-3 py-2"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Método</label>
+              <select
+                className="w-full border rounded px-3 py-2"
+                value={method}
+                onChange={(e) => setMethod(e.target.value as InterviewMethod)}
+              >
+                <option value="Presencial">Presencial</option>
+                <option value="Zoom">Zoom</option>
+                <option value="Google Meet">Google Meet</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4">
+            <Button variant="ghost" onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={!date || !time || !method}
+            >
+              {isRescheduling ? "Reagendar" : "Agendar"}
+            </Button>
+          </div>
+        </Dialog.Panel>
       </div>
-    </div>
+    </Dialog>
   );
 };

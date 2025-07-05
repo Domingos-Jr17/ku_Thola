@@ -1,47 +1,29 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { InputGroup } from "@/components/ui/InputGroup";
 import { Button } from "@/components/ui/Button";
+import { useAuth } from "@/hooks/useAuth";
 
 export const RecruiterLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // ⚠️ Simulação para testes (remova ou condicione para ambiente de dev)
-    if (email === "recrutador@empresa.com" && password === "123456") {
-      localStorage.setItem("token", "mock-token");
-      localStorage.setItem("userId", "mock-user-id");
-      navigate("/rh/dashboard");
-      setLoading(false);
-      return;
-    }
-
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("rh_token", data.token);
-        localStorage.setItem("userId", data.userId);
-        navigate("/rh/dashboard");
-      } else {
-        setError("Falha no login. Verifique suas credenciais.");
-      }
-    } catch (err) {
-      console.error("Erro ao fazer login:", err);
-      setError("Erro no sistema. Tente novamente mais tarde.");
+      await login(email, password);
+      navigate("/rh/dashboard");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError(err.message || "Falha ao fazer login.");
     } finally {
       setLoading(false);
     }

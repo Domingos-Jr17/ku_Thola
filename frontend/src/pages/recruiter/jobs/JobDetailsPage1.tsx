@@ -4,13 +4,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
 import { Button } from "@/components/ui/Button";
 import { ScheduleInterviewModal } from "@/components/cards/forms/ScheduleInterviewModal";
 import { useJobDetails } from "@/hooks/useJobDetails";
-import { CandidateCard } from "@/components/cards/Candidatecard";
+import { CandidateCard } from "@/components/cards/CandidateCard";
 import { InterviewItem } from "@/components/InterviewItem";
 
-
-
 export const JobDetailsPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const {
@@ -57,20 +55,20 @@ export const JobDetailsPage = () => {
         </TabsList>
 
         <TabsContent value="candidatos">
-          <ul className="space-y-4">
-            {job.candidatos.length === 0 ? (
-              <p className="text-gray-600">Nenhum candidato ainda.</p>
-            ) : (
-              job.candidatos.map(cand => (
+          {job.candidatos.length === 0 ? (
+            <p className="text-gray-600">Nenhum candidato ainda.</p>
+          ) : (
+            <ul className="space-y-4">
+              {job.candidatos.map(cand => (
                 <CandidateCard
                   key={cand.id}
                   candidate={cand}
                   onAvaliar={() => handleAvaliar(cand.id)}
                   onAgendar={() => openScheduleModal(cand.id, cand.nome)}
                 />
-              ))
-            )}
-          </ul>
+              ))}
+            </ul>
+          )}
         </TabsContent>
 
         <TabsContent value="entrevistas">
@@ -90,14 +88,16 @@ export const JobDetailsPage = () => {
         </TabsContent>
       </Tabs>
 
-      <ScheduleInterviewModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSubmit={handleScheduleSubmit}
-        candidateName={selectedCandidate?.nome || ""}
-      />
+    <ScheduleInterviewModal
+  isOpen={modalOpen}
+  onClose={() => setModalOpen(false)}
+  onSubmit={handleScheduleSubmit}
+  candidateName={selectedCandidate?.nome || ""}
+  initialDate={""}
+  initialTime={""}
+  initialMethod={"Presencial"}
+  />
+           
     </div>
   );
 };
-
-
