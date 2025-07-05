@@ -5,7 +5,7 @@ import { JobProvider } from "./context/jobsContext";
 import { CandidateProvider } from "./context/CandidateContext";
 import "./index.css";
 import { EvaluationProvider } from "./context/EvaluationContext";
-import { AuthProvider } from "./context/AuthContext2";
+import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

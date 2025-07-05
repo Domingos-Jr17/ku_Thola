@@ -16,7 +16,7 @@ export const RecruiterProfile = () => {
   // Estados controlados dos inputs
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState("");
+  const [, set] = useState("");
   const [photoPreview, setPhotoPreview] = useState(user.photoUrl || "");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -34,16 +34,17 @@ export const RecruiterProfile = () => {
   };
 
   // Salvar alterações
-  const handleSave = () => {
-    updateUser({ name, email, photoUrl: photoPreview });
+    const handleSave = () => {
+  updateUser({ name, email, photoUrl: photoPreview });
+  const newPassword = "";
 
-    if (password) {
-      console.log("🔐 Nova senha digitada:", password);
-      // Futuro: enviar senha para API
-    }
+  if (newPassword !== "") {
+    console.log("🔐 Nova senha digitada:", newPassword);
+    // Futuro: enviar senha para API
+  }
 
-    alert("Perfil atualizado com sucesso!");
-  };
+  alert("Perfil atualizado com sucesso!");
+};
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
@@ -98,10 +99,10 @@ export const RecruiterProfile = () => {
           <div>
             <label className="block font-medium mb-1">Nova Senha</label>
             <input
-              type="password"
+              type=""
               className="w-full border border-gray-300 rounded px-3 py-2"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value=""
+              onChange={(e) => set(e.target.value)}
               placeholder="••••••••"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -115,9 +116,9 @@ export const RecruiterProfile = () => {
           <p><strong>Cargo:</strong> {user.role}</p>
           <p>
             <strong>Último login:</strong>{" "}
-            {format(new Date(user.lastLogin), "dd/MM/yyyy 'às' HH:mm", {
+            {user.lastLogin ? format(new Date(user.lastLogin), "dd/MM/yyyy 'às' HH:mm", {
               locale: pt,
-            })}
+            }) : "Não disponível"}
           </p>
         </div>
 

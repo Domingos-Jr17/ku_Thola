@@ -51,7 +51,7 @@ export const JobDetailsPage = () => {
         <TabsList>
           <TabsTrigger value="candidatos">Candidatos</TabsTrigger>
           <TabsTrigger value="entrevistas">Entrevistas</TabsTrigger>
-          <TabsTrigger value="feedbacks">Feedbacks</TabsTrigger>
+          <TabsTrigger value=" Avaliações"> Avaliações</TabsTrigger>
         </TabsList>
 
         <TabsContent value="candidatos">

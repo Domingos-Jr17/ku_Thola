@@ -19,7 +19,7 @@ export const RecruiterLogin = () => {
     setError("");
 
     try {
-      await login(email, password);
+      await login("recrutador", email, password);
       navigate("/rh/dashboard");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

@@ -1,7 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useJobContext } from "@/hooks/useJobContext";
-import { Header } from "@/components/layout/headers";
-import { Footer } from "@/components/layout/footer";
 import { CandidateScoreCard } from "@/components/cards/CandidateScoreCard";
 import { calculateCandidateScores } from "@/utils/calculateCandidateScores"; // novo import
 
@@ -15,7 +13,7 @@ export const JobMatching = () => {
   if (!job) {
     return (
       <div>
-        <Header />
+     
         <main className="max-w-4xl mx-auto p-6">
           <button
             onClick={() => navigate("/rh/vagas")}
@@ -26,7 +24,7 @@ export const JobMatching = () => {
           <h1 className="text-xl font-semibold text-red-600">Vaga não encontrada</h1>
           <p>Por favor, selecione uma vaga válida para ver o matching.</p>
         </main>
-        <Footer />
+       
       </div>
     );
   }
@@ -35,7 +33,7 @@ export const JobMatching = () => {
 
   return (
     <div>
-      <Header />
+   
       <main className="max-w-4xl mx-auto p-6">
         <button
           onClick={() => navigate("/rh/vagas")}
@@ -65,7 +63,7 @@ export const JobMatching = () => {
           </div>
         )}
       </main>
-      <Footer />
+  
     </div>
   );
 };

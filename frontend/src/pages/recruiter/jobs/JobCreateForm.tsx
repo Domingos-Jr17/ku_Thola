@@ -17,7 +17,7 @@ export const JobCreateForm: React.FC<JobCreateFormProps> = ({ onCreated }) => {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputGroup label="Título da vaga" id="title" value={form.title} onChange={handleChange("title")} required />
-          <InputGroup label="Departamento" id="department" value={form.department} onChange={handleChange("department")} required />
+          <InputGroup label="Departamento" id="department" value={form.department} onChange={handleChange("department")}/>
 
           <div>
             <label htmlFor="type" className="block text-sm font-medium text-gray-800 mb-1">
@@ -36,7 +36,7 @@ export const JobCreateForm: React.FC<JobCreateFormProps> = ({ onCreated }) => {
             </select>
           </div>
 
-          <InputGroup label="Data de expiração" id="expirationDate" type="date" value={form.expirationDate} onChange={handleChange("expirationDate")} required />
+          <InputGroup label="Data de Encerramento" id="expirationDate" type="date" value={form.expirationDate} onChange={handleChange("expirationDate")} required />
           <InputGroup label="Localização" id="location" value={form.location} onChange={handleChange("location")} required />
 
           <InputGroup

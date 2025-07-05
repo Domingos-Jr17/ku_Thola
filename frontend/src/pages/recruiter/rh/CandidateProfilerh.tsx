@@ -2,7 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { useCandidateContext } from "@/hooks/useCandidateContext";
 
-export const CandidateProfile = () => {
+
+export const CandidateProfileRh = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { candidates } = useCandidateContext(); 
@@ -41,3 +42,5 @@ export const CandidateProfile = () => {
     </div>
   );
 };
+
+

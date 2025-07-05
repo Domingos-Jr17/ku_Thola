@@ -1,6 +1,6 @@
 // routes/PrivateRoute.tsx
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext2";
+import { useAuth } from "@/hooks/useAuth";
 
 interface PrivateRouteProps {
   allowedFor: "candidato" | "recrutador";

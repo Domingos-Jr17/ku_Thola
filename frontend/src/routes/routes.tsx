@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { PrivateRoute } from "./PrivateRoute";
+//simport { PrivateRoute } from "./PrivateRoute";
 // Layouts
 import { RHLayout } from "../layouts/rh/rhLayout";
 import CandidateLayout from "../layouts/candidate/CandidateLayout";
@@ -44,7 +44,8 @@ import { Reports } from "../pages/recruiter/reports/Reports";
 import { RecruiterProfile } from "../pages/recruiter/profile/RecruiterProfile";
 import { ScheduledInterviews } from "../pages/recruiter/process/ScheduledInterviews";
 import { JobDetailsPage } from "../pages/recruiter/jobs/JobDetailsPage1";
-import { CandidatesByJob } from "../pages/recruiter/aplications/CandidatesByJob";
+import { SettingsPage } from "@/pages/recruiter/profile/Settings";
+import { CandidateProfileRh } from "@/pages/recruiter/rh/CandidateProfilerh";
 
 export function AppRoutes() {
   return (
@@ -61,8 +62,11 @@ export function AppRoutes() {
         <Route path="/privacidade" element={<PrivacyPolicy />} />
         <Route path="/termos" element={<TermsOfUse />} />
 
+      
+        <Route path="/login" element={<LoginCandidate />} />
+
         {/* 👤 Candidato - Rotas protegidas (com layout) */}
-        <Route element={<PrivateRoute allowedFor="candidato" />}>
+        {/* <Route element={<PrivateRoute allowedFor="candidato" />}> */}
         <Route path="/candidato" element={<CandidateLayout />}>
           {/* Vagas */}
           <Route path="vagas" element={<JobsList />} />
@@ -80,12 +84,13 @@ export function AppRoutes() {
           <Route path="notificacoes" element={<CandidateNotifications />} />
           <Route path="feedback/:id" element={<InterviewFeedback />} />
         </Route>
-        </Route>
+        {/* </Route> */}
 
         {/* 👨‍💼 Recrutador - Layout e sub-rotas */}
-        <Route element={<PrivateRoute allowedFor="recrutador" />}>
+       
         <Route path="/rh/login" element={<RecruiterLogin />} />
-
+      
+      {/* <Route element={<PrivateRoute allowedFor="recrutador" />}> */}
         <Route path="/rh" element={<RHLayout />}>
           {/* Principais rotas */}
           <Route path="dashboard" element={<RecruiterDashboard />} />
@@ -95,14 +100,14 @@ export function AppRoutes() {
           <Route path="historico" element={<JobHistory />} />
           <Route path="entrevistas" element={<ScheduledInterviews />} />
           <Route path="vagas/:id" element={<JobDetailsPage />} />
-          <Route path="/rh/vagas/:id/candidatos" element={<CandidatesByJob />} />
+        
 
           {/* Job Matching */}
           <Route path="job-matching/:id" element={<JobMatching />} />
 
           {/* Sub-rotas agrupadas do candidato */}
           <Route path="candidato/:id">
-            <Route index element={<CandidateProfile />} />
+            <Route index element={<CandidateProfileRh />} />
             <Route path="avaliacao" element={<CandidateEvaluation />} />
             <Route path="feedback" element={<FinalFeedback />} />
             <Route path="entrevista" element={<CandidateInterview />} />
@@ -114,8 +119,9 @@ export function AppRoutes() {
           <Route path="comunicacao" element={<Messages />} />
           <Route path="relatorios" element={<Reports />} />
           <Route path="perfil" element={<RecruiterProfile />} />
+           <Route path="configuracoes" element={<SettingsPage />} />
         </Route>
-        </Route>
+        {/* </Route> */}
 
         {/* ❌ Página de erro (para rotas não encontradas) */}
         <Route path="*" element={<ErrorPage />} />

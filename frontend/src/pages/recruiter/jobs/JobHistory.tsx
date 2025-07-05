@@ -29,9 +29,9 @@ export const JobHistory = () => {
               <th className="border px-4 py-2">Título</th>
               <th className="border px-4 py-2">Departamento</th>
               <th className="border px-4 py-2">Tipo</th>
-              <th className="border px-4 py-2">Expiração</th>
+              <th className="border px-4 py-2">Encerramento</th>
               <th className="border px-4 py-2">Candidatos</th>
-              <th className="border px-4 py-2">Ações</th>
+              <th className="border px-4 py-2">Acções</th>
             </tr>
           </thead>
           <tbody>

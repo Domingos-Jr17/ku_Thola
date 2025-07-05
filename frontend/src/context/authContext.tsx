@@ -5,93 +5,122 @@ import {
   type ReactNode,
 } from "react";
 
-// 👤 Tipos
-interface Recruiter {
+type UserType = "candidato" | "recrutador";
+
+interface BaseUser {
   id: string;
   name: string;
   email: string;
-  role: string;
-  lastLogin: string;
+  role?: string;
   photoUrl?: string;
+  lastLogin?: string;
 }
 
-export interface AuthContextType {
-  user: Recruiter | null;
+interface AuthContextType {
+  isAuthenticated: boolean;
+  userType: UserType | null;
+  user: BaseUser | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (type: UserType, email: string, password: string) => Promise<void>;
   logout: () => void;
-  updateUser: (data: Partial<Recruiter>) => void;
+  updateUser: (data: Partial<BaseUser>) => void;
 }
 
-// 🔐 Criação do Contexto
 // eslint-disable-next-line react-refresh/only-export-components
-export const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// 🧠 Provider
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<Recruiter | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userType, setUserType] = useState<UserType | null>(null);
+  const [user, setUser] = useState<BaseUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔄 Carregar do localStorage ao iniciar
+  const storageKey = "auth_user";
+
+  // 🔁 Recupera do localStorage
   useEffect(() => {
-    const stored = localStorage.getItem("recruiter_user");
+    const stored = localStorage.getItem(storageKey);
     if (stored) {
-      setUser(JSON.parse(stored));
+      const { user, type } = JSON.parse(stored);
+      setUser(user);
+      setUserType(type);
+      setIsAuthenticated(true);
     }
     setLoading(false);
   }, []);
 
-  // 💾 Salvar no localStorage quando user mudar
+  // 💾 Salvar no localStorage
   useEffect(() => {
-    if (user) {
-      localStorage.setItem("recruiter_user", JSON.stringify(user));
+    if (user && userType) {
+      localStorage.setItem(storageKey, JSON.stringify({ user, type: userType }));
     } else {
-      localStorage.removeItem("recruiter_user");
+      localStorage.removeItem(storageKey);
     }
-  }, [user]);
+  }, [user, userType]);
 
-  // 🚪 Logout
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("recruiter_user");
-  };
-
-  // 🔐 Login Simulado (pode substituir com chamada real à API)
+  // 🔐 Login Simulado (pode integrar com API depois)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const login = async (email: string, password: string) => {
-    setLoading(true);
-    try {
-      // Simulação de login
-      const fakeUser: Recruiter = {
-        id: "1",
-        name: "Recrutador Exemplo",
-        email,
-        role: "Coordenador de Recrutamento",
-        lastLogin: new Date().toISOString(),
-        photoUrl: "",
-      };
+  const login = async (type: UserType, email: string, password: string) => {
+  setLoading(true);
 
-      // Espera artificial (simulando request)
-      await new Promise((res) => setTimeout(res, 1000));
-
-      setUser(fakeUser);
-    } catch (err) {
-      console.error("Erro ao fazer login", err);
-    } finally {
-      setLoading(false);
+  try {
+    // ⚠️ Verificação simples simulada
+    if (
+      (type === "recrutador" && (email !== "recrutador@empresa.com" || password !== "123456")) ||
+      (type === "candidato" && (email !== "candidato@empresa.com" || password !== "123456"))
+    ) {
+      throw new Error("Email ou senha incorretos.");
     }
+
+    const fakeUser: BaseUser = {
+      id: "1",
+      name: type === "recrutador" ? "Recrutador Exemplo" : "Candidato Exemplo",
+      email,
+      role: type === "recrutador" ? "Coordenador de Recrutamento" : "Candidato",
+      lastLogin: new Date().toISOString(),
+      photoUrl: "",
+    };
+
+    // Simular tempo de requisição
+    await new Promise((res) => setTimeout(res, 1000));
+
+    setIsAuthenticated(true);
+    setUserType(type);
+    setUser(fakeUser);
+  } catch (error) {
+    console.error("Erro ao fazer login", error);
+    throw error; // ← importante: relançar o erro para o componente tratar
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    setUserType(null);
+    setUser(null);
+    localStorage.removeItem(storageKey);
   };
 
-  // ✏️ Atualizar dados do usuário (ex: nome, senha)
-  const updateUser = (data: Partial<Recruiter>) => {
+  const updateUser = (data: Partial<BaseUser>) => {
     setUser((prev) => (prev ? { ...prev, ...data } : prev));
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, logout, updateUser }}
+      value={{
+        isAuthenticated,
+        userType,
+        user,
+        loading,
+        login,
+        logout,
+        updateUser,
+      }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+
