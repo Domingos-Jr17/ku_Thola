@@ -98,15 +98,14 @@ export const JobsList = () => {
               // Map type to lowercase to match jobProps
               const mappedJob = {
                 ...job,
-                type:
-                  job.type === "Presencial"
-                    ? "presencial"
-                    : job.type === "Virtual"
+                type: job.type === "Presencial"
+                  ? "presencial"
+                  : job.type === "Virtual"
                     ? "virtual"
                     : job.type === "Híbrido"
-                    ? "híbrido"
-                    : job.type,
-              } as jobProps;
+                      ? "híbrido"
+                      : job.type,
+              } as unknown as jobProps;
               return <JobCard key={job.id || job._id} job={mappedJob} />;
             })}
           </ul>

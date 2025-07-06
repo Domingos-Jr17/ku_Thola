@@ -58,7 +58,8 @@ export function useCreateJob(onSuccess?: () => void) {
         .split(",")
         .map(r => r.trim())
         .filter(Boolean),
-      status: "Aberta" as const,
+         benefits: form.benefits,
+      status: "aberta" as const,
       candidatos: [],
       entrevistas: [],
       dataCriacao: new Date().toISOString(),

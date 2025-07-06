@@ -1,17 +1,35 @@
 import { useJobContext } from "@/hooks/useJobContext";
 
 export function useJobList() {
-  const { jobs } = useJobContext();
+  const context = useJobContext();
 
-  const normalizedJobs = jobs.map(job => ({
+  if (!context) {
+    throw new Error("useJobList deve ser usado dentro de JobProvider");
+  }
+
+  const { jobs, deleteJob, updateJob } = context;
+
+  const normalizedJobs = jobs.map((job) => ({
     ...job,
-    status:
-      job.status === "Aberta"
-        ? "aberta"
-        : job.status === "Fechada"
-        ? "fechada"
-        : (job.status as "aberta" | "fechada" | undefined),
+    status: normalizeStatus(job.status),
   }));
 
-  return { jobs: normalizedJobs };
+  const removeJob = (id: string) => {
+    deleteJob(id);
+  };
+
+  return {
+    jobs: normalizedJobs,
+    removeJob,
+    updateJob,
+  };
+}
+
+// Função utilitária para normalizar o status
+function normalizeStatus(status: string): "aberta" | "fechada" | "rascunho" {
+  const s = status.toLowerCase();
+  if (s === "aberta") return "aberta";
+  if (s === "fechada") return "fechada";
+  if (s === "rascunho") return "rascunho";
+  return "rascunho"; // fallback seguro
 }

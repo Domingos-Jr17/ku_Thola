@@ -28,8 +28,9 @@ export interface Job {
   location: string;
   expirationDate: string;
   description: string;
+  benefits: string;
   requirements: string[];
-  status: "Aberta" | "Fechada";
+  status: "aberta" | "fechada" | "rascunho";
   candidatos: Candidate[];
   entrevistas: Interview[];
 }
@@ -38,6 +39,7 @@ interface JobContextType {
   jobs: Job[];
   addJob: (job: Job) => void;
   deleteJob: (id: string) => void;
+  updateJob: (job: Job) => void;
   getJobById: (id: string | undefined) => Job | undefined;
   avaliarCandidato: (jobId: string, candidateId: string) => void;
   agendarEntrevista: (jobId: string, interview: Interview) => void;
@@ -47,6 +49,7 @@ interface JobContextType {
 // eslint-disable-next-line react-refresh/only-export-components
 export const JobContext = createContext<JobContextType | undefined>(undefined);
 
+// Dados iniciais fictícios
 const initialJobs: Job[] = [
   {
     id: "1",
@@ -58,79 +61,40 @@ const initialJobs: Job[] = [
     expirationDate: "2025-07-07",
     description: "Estamos à procura de um dev frontend com React e Tailwind.",
     requirements: ["React", "Tailwind", "HTML", "CSS"],
-    status: "Aberta",
-    
-     candidatos: [
-      { id: "1", nome: "Albertina Dlambe", status: "Entrevista marcada", avaliado: true },
-      { id: "2", nome: "Graça Boaventura Bila", status: "Em avaliação", avaliado: false },
-      { id: "3", nome: "Domingos A. Timane Jr", status: "Em avaliação", avaliado: false },
-      { id: "6", nome: "Neyla Feliza Américo Chavane", status: "Em avaliação", avaliado: false },
-      { id: "7", nome: "Gersina Guambe", status: "Em avaliação", avaliado: false },
-      { id: "10", nome: "Samuel Munguambe", status: "Em avaliação", avaliado: false },
-      { id: "11", nome: "Carla Ernesto", status: "Em avaliação", avaliado: false }
-    ],
-    entrevistas: [
-      {
-        id: "int1",
-        name: "Albertina Dlambe",
-        date: "2025-07-01",
-        link: "https://meet.example.com/abc",
-        candidateId: "1"
-      },
-      {
-        id: "int2",
-        name: "Domingos A. Timane Jr",
-        date: "2025-07-04",
-        link: "https://meet.example.com/abc",
-        candidateId: "2"
-      }
-    ],
+    status: "aberta",
+    candidatos: [],
+    entrevistas: [],
     local: undefined,
     descricao: undefined,
     dataCriacao: undefined,
-    candidateCount: 7
+    candidateCount: 7,
+    benefits: ""
   },
   {
     id: "2",
     _id: "2",
-    title: "Desenvolvedor backend",
+    title: "Desenvolvedor Backend",
     department: "Tecnologia",
     type: "Presencial",
     location: "Maputo",
     expirationDate: "2025-07-01",
-    description: "Estamos à procura de um dev frontend com React e Tailwind.",
-    requirements: ["React", "Tailwind", "HTML", "CSS"],
-    status: "Aberta",
-    candidatos: [
-      { id: "1", nome: "Albertina Dlambe", status: "Entrevista marcada", avaliado: true },
-      { id: "2", nome: "Graça Boaventura Bila", status: "Em avaliação", avaliado: false },
-      { id: "3", nome: "Domingos A. Timane Jr", status: "Em avaliação", avaliado: false },
-      { id: "6", nome: "Neyla Feliza Américo Chavane", status: "Em avaliação", avaliado: false },
-      { id: "7", nome: "Gersina Guambe", status: "Em avaliação", avaliado: false },
-      { id: "10", nome: "Samuel Munguambe", status: "Em avaliação", avaliado: false },
-      { id: "11", nome: "Carla Ernesto", status: "Em avaliação", avaliado: false }
-    ],
-    entrevistas: [
-      {
-        id: "int1",
-        name: "Albertina Dlambe",
-        date: "2025-07-01",
-        link: "https://meet.example.com/abc",
-        candidateId: "1"
-      }
-    ],
+    description: "Precisamos de dev backend com Node.js e MongoDB.",
+    requirements: ["Node.js", "MongoDB", "Express"],
+    status: "fechada",
+    candidatos: [],
+    entrevistas: [],
     local: undefined,
     descricao: undefined,
     dataCriacao: undefined,
-    candidateCount: 7
+    candidateCount: 7,
+    benefits: ""
   }
 ];
 
-
-// Ações do reducer
 type JobAction =
   | { type: "ADD_JOB"; payload: Job }
   | { type: "DELETE_JOB"; payload: string }
+  | { type: "UPDATE_JOB"; payload: Job }
   | { type: "AVALIAR_CANDIDATO"; payload: { jobId: string; candidateId: string } }
   | { type: "AGENDAR_ENTREVISTA"; payload: { jobId: string; interview: Interview } }
   | { type: "FECHAR_CANDIDATURAS"; payload: string };
@@ -142,32 +106,37 @@ const jobsReducer = (state: Job[], action: JobAction): Job[] => {
       return [...state, action.payload];
 
     case "DELETE_JOB":
-      return state.filter(job => job.id !== action.payload);
+      return state.filter((job) => job.id !== action.payload);
+
+    case "UPDATE_JOB":
+      return state.map((job) =>
+        job.id === action.payload.id ? { ...job, ...action.payload } : job
+      );
 
     case "AVALIAR_CANDIDATO":
-      return state.map(job =>
+      return state.map((job) =>
         job.id === action.payload.jobId
           ? {
               ...job,
-              candidatos: job.candidatos.map(c =>
+              candidatos: job.candidatos.map((c) =>
                 c.id === action.payload.candidateId
                   ? { ...c, avaliado: true, status: "Avaliado" }
                   : c
               )
             }
           : job
-  );
+      );
 
     case "AGENDAR_ENTREVISTA":
-      return state.map(job =>
+      return state.map((job) =>
         job.id === action.payload.jobId
           ? { ...job, entrevistas: [...job.entrevistas, action.payload.interview] }
           : job
       );
 
     case "FECHAR_CANDIDATURAS":
-      return state.map(job =>
-        job.id === action.payload ? { ...job, status: "Fechada" } : job
+      return state.map((job) =>
+        job.id === action.payload ? { ...job, status: "fechada" } : job
       );
 
     default:
@@ -184,14 +153,22 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
       ...job,
       id: Date.now().toString(),
       _id: Date.now().toString(),
-      status: "Aberta",
+      status: "aberta",
       candidatos: [],
       entrevistas: []
     };
     dispatch({ type: "ADD_JOB", payload: jobWithId });
   };
 
-  const getJobById = (id?: string) => jobs.find(job => job.id === id);
+  const updateJob = (job: Job) => {
+    dispatch({ type: "UPDATE_JOB", payload: job });
+  };
+
+  const deleteJob = (id: string) => {
+    dispatch({ type: "DELETE_JOB", payload: id });
+  };
+
+  const getJobById = (id?: string) => jobs.find((job) => job.id === id);
 
   const avaliarCandidato = (jobId: string, candidateId: string) => {
     dispatch({ type: "AVALIAR_CANDIDATO", payload: { jobId, candidateId } });
@@ -205,16 +182,13 @@ export const JobProvider = ({ children }: { children: ReactNode }) => {
     dispatch({ type: "FECHAR_CANDIDATURAS", payload: jobId });
   };
 
-  const deleteJob = (id: string) => {
-    dispatch({ type: "DELETE_JOB", payload: id });
-  };
-
   return (
     <JobContext.Provider
       value={{
         jobs,
         addJob,
         deleteJob,
+        updateJob,
         getJobById,
         avaliarCandidato,
         agendarEntrevista,

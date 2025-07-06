@@ -6,14 +6,14 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 
 export const EvaluationsList = () => {
   const navigate = useNavigate();
-  const { evaluations, filterEvaluations } = useEvaluationContext();
+  const { filterEvaluations } = useEvaluationContext();
   const { jobs } = useJobContext();
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
 
-  const filtered = useMemo(() => filterEvaluations(search), [search, evaluations]);
+  const filtered = useMemo(() => filterEvaluations(search), [filterEvaluations, search]);
 
   const paginated = useMemo(() => {
     const start = (page - 1) * itemsPerPage;

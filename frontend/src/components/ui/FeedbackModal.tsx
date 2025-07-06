@@ -58,7 +58,7 @@ export const FeedbackModal = ({
           rows={4}
           required
           value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setFeedback(e.target.value)}
         />
 
         <div className="flex justify-end gap-4 mt-6">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type SetStateAction } from "react";
 import { InputGroup } from "@/components/ui/InputGroup";
 import { Button } from "@/components/ui/Button";
 import { CheckCircle, XCircle } from "lucide-react";
@@ -41,7 +41,7 @@ export const CandidateCommunication = () => {
           id="email"
           type="text"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)}
           placeholder="ex: candidato@email.com ou 82xxxxxxx"
           required
         />
@@ -66,7 +66,7 @@ export const CandidateCommunication = () => {
           label="Mensagem"
           id="mensagem"
           value={mensagem}
-          onChange={(e) => setMensagem(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setMensagem(e.target.value)}
           placeholder="Escreva sua mensagem aqui"
           textarea
           rows={5}

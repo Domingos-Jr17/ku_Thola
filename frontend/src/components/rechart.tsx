@@ -1,4 +1,3 @@
-// components/Reports/CandidatesPerJobChart.tsx
 import {
   Chart as ChartJS,
   BarElement,

@@ -1,4 +1,3 @@
-import React from "react";
 
 export const CandidateScoreCard = ({ name, score, notes }: { name: string; score: number; notes: string }) => {
   return (

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle, Clock, Circle } from "lucide-react";
 
-type Status = "concluido" | "ativo" | "pendente";
+type Status = "concluido" | "activo" | "pendente";
 
 type Etapa = {
   etapa: string;
@@ -23,13 +23,13 @@ interface TimelineCandidaturaProps {
 
 const statusStyles: Record<Status, string> = {
   concluido: "border-green-500 bg-green-50 text-green-700",
-  ativo: "border-yellow-500 bg-yellow-50 text-yellow-700",
+  activo: "border-yellow-500 bg-yellow-50 text-yellow-700",
   pendente: "border-gray-400 bg-gray-50 text-gray-700",
 };
 
 const statusIcon = {
   concluido: <CheckCircle size={20} className="text-green-500" />,
-  ativo: <Clock size={20} className="text-yellow-500" />,
+  activo: <Clock size={20} className="text-yellow-500" />,
   pendente: <Circle size={20} className="text-gray-400" />,
 };
 

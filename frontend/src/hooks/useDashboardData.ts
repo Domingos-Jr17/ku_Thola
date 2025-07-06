@@ -1,4 +1,3 @@
-// src/modules/recruiter/dashboard/useDashboardData.ts
 
 export function useDashboardData() {
   // Mock temporário - pode ser substituído por Firebase futuramente

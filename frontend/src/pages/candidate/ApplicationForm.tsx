@@ -150,7 +150,7 @@ export const ApplicationForm = () => {
               label="Nome completo"
               id="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setName(e.target.value)}
               placeholder="Digite seu nome completo"
               required
             />
@@ -159,7 +159,7 @@ export const ApplicationForm = () => {
               id="email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setEmail(e.target.value)}
               placeholder="exemplo@dominio.com"
               required
             />
@@ -168,7 +168,7 @@ export const ApplicationForm = () => {
               id="phone"
               type="tel"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPhone(e.target.value)}
               placeholder="+258 8XX XXX XXX"
               required
             />
@@ -203,7 +203,7 @@ export const ApplicationForm = () => {
                 label="Carta de Apresentação (opcional)"
                 id="coverLetter"
                 value={coverLetter}
-                onChange={(e) => setCoverLetter(e.target.value)}
+                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setCoverLetter(e.target.value)}
                 placeholder="Fale brevemente sobre sua motivação..."
                 textarea
                 rows={5}

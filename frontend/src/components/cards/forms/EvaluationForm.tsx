@@ -100,7 +100,7 @@ const handleNumberChange = (setter: (v: string) => void) => (
         textarea
         rows={4}
         value={comments}
-        onChange={(e) => setComments(e.target.value)}
+        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setComments(e.target.value)}
       />
 
       <div className="flex justify-end">

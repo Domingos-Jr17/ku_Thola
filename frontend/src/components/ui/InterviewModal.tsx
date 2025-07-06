@@ -1,4 +1,3 @@
-// src/components/ui/InterviewModal.tsx
 import React, { useState, useEffect } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
@@ -46,7 +45,7 @@ export const InterviewModal = ({
           id="interviewDate"
           required
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDate(e.target.value)}
         />
 
         <InputGroup
@@ -55,7 +54,7 @@ export const InterviewModal = ({
           id="meetingLink"
           placeholder="https://..."
           value={link}
-          onChange={(e) => setLink(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setLink(e.target.value)}
         />
 
         <InputGroup
@@ -65,7 +64,7 @@ export const InterviewModal = ({
           textarea
           rows={3}
           value={notes}
-          onChange={(e) => setNotes(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setNotes(e.target.value)}
         />
 
         <div className="flex justify-end gap-4 mt-6">

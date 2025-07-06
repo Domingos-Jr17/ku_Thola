@@ -1,4 +1,3 @@
-// JobDetailsPage.tsx
 import { useParams, useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
 import { Button } from "@/components/ui/Button";
@@ -40,7 +39,7 @@ export const JobDetailsPage = () => {
         <p><strong>Local:</strong> {job.local}</p>
         <p><strong>Data de criação:</strong> {job.dataCriacao}</p>
         <p className="mt-2 text-gray-700 whitespace-pre-line">{job.descricao}</p>
-        {job.status === "Aberta" && (
+        {job.status === "aberta" && (
           <Button className="mt-4" variant="destructive" onClick={handleFecharCandidaturas}>
             Fechar candidaturas
           </Button>

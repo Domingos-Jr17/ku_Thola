@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { TimelineCandidatura } from "@/components/ui/TimelineCandidatura";
 import type { Candidatura } from "@/components/ui/TimelineCandidatura";
 import { Button } from "@/components/ui/Button";
@@ -10,7 +10,7 @@ const candidaturasMock: Candidatura[] = [
     empresa: "Construtora Maputo",
     etapas: [
       { etapa: "Submetida", status: "concluido" },
-      { etapa: "Em análise", status: "ativo" },
+      { etapa: "Em análise", status: "activo" },
       { etapa: "Entrevista marcada", status: "pendente" },
       { etapa: "Feedback", status: "pendente" },
     ],
@@ -23,7 +23,7 @@ const candidaturasMock: Candidatura[] = [
     etapas: [
       { etapa: "Submetida", status: "concluido" },
       { etapa: "Em análise", status: "concluido" },
-      { etapa: "Entrevista marcada", status: "ativo" },
+      { etapa: "Entrevista marcada", status: "activo" },
       { etapa: "Feedback", status: "pendente" },
     ],
     dataCandidatura: "06/06/2025"

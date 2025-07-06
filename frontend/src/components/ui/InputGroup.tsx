@@ -1,67 +1,59 @@
-// src/components/ui/InputGroup.tsx
-import React from "react";
+import React, { forwardRef, type InputHTMLAttributes, type TextareaHTMLAttributes } from "react";
 
 type InputGroupProps = {
-  label: string;
+  label?: string;
   id: string;
-  type?: string; // tipo do input (ex: text, number, date, etc)
-  value: string;
-  min?: number;
-  max?: number;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  placeholder?: string;
+  textarea?: boolean;
+  rows?: number;
   required?: boolean;
-  textarea?: boolean; // se true, renderiza <textarea> em vez de <input>
-  rows?: number; // número de linhas para textarea
-};
+  className?: string;
+  // O resto dos props são separados para input e textarea:
+} & (InputHTMLAttributes<HTMLInputElement> | TextareaHTMLAttributes<HTMLTextAreaElement>);
 
-export const InputGroup: React.FC<InputGroupProps> = ({
-  label,
-  id,
-  type = "text",
-  value,
-  onChange,
-  min,
-  max,
-  placeholder,
-  required = false,
-  textarea = false,
-  rows = 3,
-}) => {
+export const InputGroup = forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  InputGroupProps
+>((props, ref) => {
+  const {
+    label,
+    id,
+    textarea = false,
+    rows = 3,
+    required = false,
+    className = "",
+    ...rest
+  } = props;
+
   return (
     <div>
-      {/* Label acessível com indicação de campo obrigatório */}
-      <label htmlFor={id} className="block text-sm font-medium text-gray-800 mb-1">
-        {label} {required && <span aria-label="campo obrigatório">*</span>}
-      </label>
+      {label && (
+        <label htmlFor={id} className="block text-sm font-medium text-gray-800 mb-1">
+          {label} {required && <span aria-label="campo obrigatório">*</span>}
+        </label>
+      )}
 
       {textarea ? (
-        // Renderiza textarea
         <textarea
           id={id}
+          ref={ref as React.Ref<HTMLTextAreaElement>}
           rows={rows}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
           required={required}
-          className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-600 transition"
+          className={`mt-1 w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm
+                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-600 transition ${className}`}
+          {...(rest as TextareaHTMLAttributes<HTMLTextAreaElement>)}
         />
       ) : (
-        // Renderiza input padrão com suporte a min/max (ex: number, date)
         <input
           id={id}
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
+          ref={ref as React.Ref<HTMLInputElement>}
           required={required}
-          {...(min !== undefined ? { min } : {})}
-          {...(max !== undefined ? { max } : {})}
-          className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-600 transition"
+          className={`mt-1 w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm
+                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-600 transition ${className}`}
+          {...(rest as InputHTMLAttributes<HTMLInputElement>)}
         />
       )}
     </div>
   );
-};
+});
+
+InputGroup.displayName = "InputGroup";

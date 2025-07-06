@@ -10,7 +10,7 @@ interface Job {
   department: string;
   type: string;
   expirationDate: string;
-  status?: "aberta" | "fechada";
+ status?: "aberta" | "fechada" | "rascunho";
 }
 
 interface Props {
@@ -42,9 +42,9 @@ export const JobListItem: React.FC<Props> = ({ job }) => {
         {job.status && (
           <span
             className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-semibold
-              ${job.status === "aberta" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+              ${job.status === "aberta" ? "bg-green-100 text-green-700" : job.status === "fechada" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"}`}
           >
-            {job.status === "aberta" ? "Aberta" : "Fechada"}
+            {job.status === "aberta" ? "Aberta" : job.status === "fechada" ? "Fechada" : "Rascunho"}
           </span>
         )}
       </div>

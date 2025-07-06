@@ -51,7 +51,7 @@ export const CandidateNotificationsRh = () => {
           id="email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setEmail(e.target.value)}
           required
         />
 
@@ -60,7 +60,7 @@ export const CandidateNotificationsRh = () => {
           id="subject"
           type="text"
           value={subject}
-          onChange={(e) => setSubject(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setSubject(e.target.value)}
           required
         />
 
@@ -70,7 +70,7 @@ export const CandidateNotificationsRh = () => {
           textarea
           rows={5}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setMessage(e.target.value)}
           required
         />
 

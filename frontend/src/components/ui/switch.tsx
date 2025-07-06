@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// src/components/ui/Switch.tsx
 import { Switch as HeadlessSwitch } from "@headlessui/react";
 import classNames from "classnames";
 
